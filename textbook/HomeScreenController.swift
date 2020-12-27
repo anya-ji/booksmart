@@ -27,7 +27,7 @@ class HomeScreenController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        view.backgroundColor = .lightGray
+        setupBackground()
         homeScreenUITableHeight = view.frame.height*0.6
         
         navigationItem.searchController = searchControllerOne
@@ -69,6 +69,18 @@ class HomeScreenController: UIViewController {
         updateAll()
     }
     
+    func setupBackground() {
+        let background = UIImage(named: "white_background")
+        var imageView: UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.image = background
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.center = view.center
+        view.addSubview(imageView)
+        self.view.sendSubviewToBack(imageView)
+    }
+    
     func setupConstraints(){
 
         NSLayoutConstraint.activate([
@@ -95,6 +107,9 @@ class HomeScreenController: UIViewController {
                 self.recentlyAdded.append(newItem)
             }
 
+            self.recentlyAdded = self.recentlyAdded.sorted(by: { $0.createdAt > $1.createdAt })
+            self.lowestSellingPrice = self.lowestSellingPrice.sorted(by: { $0.price < $1.price })
+            
             //reload
             DispatchQueue.main.async {
                 self.homeScreenUITable.reloadData()
@@ -126,8 +141,8 @@ class HomeScreenController: UIViewController {
                 
             }
             
-            self.recentlyAdded.sorted(by: { $0.createdAt > $1.createdAt })
-            self.recentlyAdded.sorted(by: { $0.price < $1.price })
+            self.recentlyAdded = self.recentlyAdded.sorted(by: { $0.createdAt > $1.createdAt })
+            self.lowestSellingPrice = self.lowestSellingPrice.sorted(by: { $0.price < $1.price })
             
             //reload
             DispatchQueue.main.async {
@@ -167,7 +182,7 @@ extension HomeScreenController:UITableViewDataSource{
         }
         
         if indexPath.row == 1{
-            cell.configure(rowName: "Lowest Selling Price", rowData: self.recentlyAdded)
+            cell.configure(rowName: "Lowest Selling Price", rowData: self.lowestSellingPrice)
             cell.newScreenDelegate = self
         }
         

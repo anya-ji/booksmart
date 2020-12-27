@@ -25,13 +25,13 @@ def extract_token(request):
     if bearer_token is None or not bearer_token:
         return False, json.dumps({"error": "Invalid authorization header."})
 
-    return True, bearer_token 
+    return True, bearer_token
 
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
 
 def failure_response(message, code=404):
-    return json.dumps({"success": False, "error": "why"+message}), code
+    return json.dumps({"success": False, "error": message}), code
 
 ######### BOOKS ##########
 @app.route('/api/books/all/')
@@ -50,6 +50,37 @@ def get_book(id):
     data = c.serialize()
     return success_response(data)
 
+# @app.route('/api/books/sell/', methods=["POST"])
+# def create_book():
+#     '''
+#     body:
+#     [required]: title, price, sellerId
+#     [optional]: image, author, courseName, isbn, edition, condition
+#     '''
+#     body = json.loads(request.data)
+#     price = body.get('price')
+
+#     # check necessary fields
+#     if body.get('title') is None or price is None or not (isinstance(price, int) or \
+#         isinstance(price, float)) or body.get('sellerId') is None:
+#         return failure_response('title/price/sellerId is empty or malformed')
+
+#     # check user exists
+#     c = User.query.filter_by(id = body.get('sellerId')).first()
+#     if c is None:
+#         return failure_response('user not found')
+
+#     # create new book
+#     new_book = Book(image=body.get('image',''), title=body.get('title'),\
+#         author=body.get('author',''), courseName=body.get('courseName',''),\
+#             isbn=body.get('isbn',''), edition=body.get('edition',''), condition=body.get('condition',''),\
+#                 price=str(round(price, 2)),sellerId=body.get('sellerId'))
+#     db.session.add(new_book)
+#     db.session.commit()
+#     data = new_book.serialize()
+
+#     return success_response(data, 201)
+
 @app.route('/api/books/sell/', methods=["POST"])
 def create_book():
     '''
@@ -57,92 +88,56 @@ def create_book():
     [required]: title, price, sellerId
     [optional]: image, author, courseName, isbn, edition, condition
     '''
+    # was_successful, session_token = extract_token(request)
+
+    # if not was_successful:
+    #     return session_token
+
+    # user = users_dao.get_user_by_update_token(session_token)
+    # if not user or not user.verify_update_token(session_token):
+    #     return failure_response('Invalid update token.')
+    
     body = json.loads(request.data)
     price = body.get('price')
 
     # check necessary fields
     if body.get('title') is None or price is None or not (isinstance(price, int) or \
-     isinstance(price, float)) or body.get('sellerId') is None:
-     return failure_response('title/price/sellerId is empty or malformed')
+        isinstance(price, float)) or body.get('sellerId') is None:
+        return failure_response('title/price/sellerId is empty or malformed')
 
     # check user exists
     c = User.query.filter_by(id = body.get('sellerId')).first()
     if c is None:
-     return failure_response('user not found')
+        return failure_response('user not found')
+
+    # # check user is the one who logged in
+    # if user != c:
+    #     return failure_response('Id does not match token')
 
     # create new book
-    new_book = Book(image=body.get('image',''), title=body.get('title'),\
-     author=body.get('author',''), courseName=body.get('courseName',''),\
-         isbn=body.get('isbn',''), edition=body.get('edition',''), condition=body.get('condition',''),\
-             price=str(round(price, 2)),sellerId=body.get('sellerId'))
+    new_book = Book(image='', title=body.get('title'),\
+        author=body.get('author',''), courseName=body.get('courseName',''),\
+            isbn=body.get('isbn',''), edition=body.get('edition',''), condition=body.get('condition',''),\
+                price=str(round(price, 2)),sellerId=body.get('sellerId'))
     db.session.add(new_book)
     db.session.commit()
+
+    # upload image
+    imageData = body.get('image')
+    bookId = new_book.id
+
+    # if imageData is None:
+    #     return failure_response('No base64 URL to be found.')
+
+    if imageData != '' and imageData is not None:
+        asset = Asset(imageData=imageData, bookId=bookId)
+        db.session.add(asset)
+        db.session.commit()
+
     data = new_book.serialize()
 
     return success_response(data, 201)
 
-#@app.route('/api/books/sell/', methods=["POST"])
-#def create_book():
-#    '''
-#    body:
-#    [required]: title, price, sellerId
-#    [optional]: image, author, courseName, isbn, edition, condition
-#    '''
-#    was_successful, session_token = extract_token(request)
-#
-#    if not was_successful:
-#        return session_token
-#
-#    user = users_dao.get_user_by_update_token(session_token)
-#    if not user or not user.verify_update_token(session_token):
-#        return json.dumps({"error": "Invalid update token."})
-#
-#    body = json.loads(request.data)
-#    price = body.get('price')
-#
-#    # check necessary fields
-#    if body.get('title') is None or price is None or not (isinstance(price, int) or \
-#        isinstance(price, float)) or body.get('sellerId') is None:
-#        return failure_response('title/price/sellerId is empty or malformed')
-#
-#    # check user exists
-#    c = User.query.filter_by(id = body.get('sellerId')).first()
-#    if c is None:
-#        return failure_response('user not found')
-#
-#    # check user is the one who logged in
-#    if user != c:
-#        return failure_response('Id does not match token')
-#
-#    # create new book
-#    new_book = Book(image='', title=body.get('title'),\
-#        author=body.get('author',''), courseName=body.get('courseName',''),\
-#            isbn=body.get('isbn',''), edition=body.get('edition',''), condition=body.get('condition',''),\
-#                price=str(round(price, 2)),sellerId=body.get('sellerId'))
-#    db.session.add(new_book)
-#    db.session.commit()
-#
-#    # upload image
-#    imageData = body.get('image')
-#    bookId = new_book.id
-#
-#    # if imageData is None:
-#    #     return failure_response('No base64 URL to be found.')
-#
-#    if imageData != '' and imageData is not None:
-#        asset = Asset(imageData=imageData, bookId=bookId)
-#        db.session.add(asset)
-#        db.session.commit()
-#
-#    data = new_book.serialize()
-#
-#    return success_response(data, 201)
-
-@app.route('/api/dev/books/delete-all/', methods=["DELETE"])
-def clear_books():
-    db.session.query(Book).delete()
-    db.session.commit()
-    return success_response({})
 
 ######### USERS ##########
 @app.route('/api/users/<int:id>/')
@@ -229,21 +224,59 @@ def update_session():
         "id": user.id
         })
 
+#@app.route('/api/users/<int:id>/cart/add/', methods=["POST"])
+#def add_to_cart(id):
+#    '''
+#    body:
+#    [required]: bookId
+#    '''
+#    # was_successful, session_token = extract_token(request)
+#
+#    # if not was_successful:
+#    #     return session_token
+#
+#    # user = users_dao.get_user_by_update_token(session_token)
+#    # if not user or not user.verify_update_token(session_token):
+#    #     return json.dumps({"error": "Invalid session token."})
+#
+#    body = json.loads(request.data)
+#    bookId = body.get('bookId')
+#
+#    if bookId is None:
+#        return failure_response('bookId is empty')
+#
+#    # get book
+#    book = Book.query.filter_by(id = bookId).first()
+#    if book is None:
+#        return failure_response('book not found')
+#
+#    # get user
+#    c = User.query.filter_by(id = id).first()
+#    if c is None:
+#        return failure_response('user not found')
+#
+#    # # check user is the one who logged in
+#    # if user != c:
+#    #     return failure_response('Id does not match token')
+#    user = c
+#
+#    # check user is not adding own book to cart
+#    if user.is_selling(book):
+#        return failure_response('Cannot add own book to cart.')
+#
+#    # add to cart
+#    assoc = book_user_table.insert().values(book_id=bookId, user_id=id)
+#    db.session.execute(assoc)
+#    db.session.commit()
+#
+#    return success_response(book.serialize(), 201)
+    
 @app.route('/api/users/<int:id>/cart/add/', methods=["POST"])
 def add_to_cart(id):
     '''
     body:
     [required]: bookId
     '''
-    was_successful, session_token = extract_token(request)
-
-    if not was_successful:
-        return session_token
-
-    user = users_dao.get_user_by_update_token(session_token)
-    if not user or not user.verify_update_token(session_token):
-        return json.dumps({"error": "Invalid session token."})
-    
     body = json.loads(request.data)
     bookId = body.get('bookId')
 
@@ -256,17 +289,11 @@ def add_to_cart(id):
         return failure_response('book not found')
     
     # get user
-    c = User.query.filter_by(id = id).first()
-    if c is None:
+    user = User.query.filter_by(id = id).first()
+    if user is None:
         return failure_response('user not found')
 
-    # check user is the one who logged in
-    if user != c:
-        return failure_response('Id does not match token')
-
-    # check user is not adding own book to cart
-    if user.is_selling(book):
-        return failure_response('Cannot add own book to cart.')
+    #TODO: not your own book
 
     # add to cart
     assoc = book_user_table.insert().values(book_id=bookId, user_id=id)
@@ -281,14 +308,14 @@ def remove_from_cart(id):
     body:
     [required]: bookId
     '''
-    was_successful, session_token = extract_token(request)
+    # was_successful, session_token = extract_token(request)
 
-    if not was_successful:
-        return session_token
+    # if not was_successful:
+    #     return session_token
 
-    user = users_dao.get_user_by_update_token(session_token)
-    if not user or not user.verify_update_token(session_token):
-        return json.dumps({"error": "Invalid session token."})
+    # user = users_dao.get_user_by_update_token(session_token)
+    # if not user or not user.verify_update_token(session_token):
+    #     return json.dumps({"error": "Invalid session token."})
     
     body = json.loads(request.data)
     bookId = body.get('bookId')
@@ -306,9 +333,11 @@ def remove_from_cart(id):
     if c is None:
         return failure_response('user not found')
 
-    # check user is the one who logged in
-    if user != c:
-        return failure_response('Id does not match token')
+    # # check user is the one who logged in
+    # if user != c:
+    #     return failure_response('Id does not match token')
+
+    user = c
 
     # remove from cart
     if book in user.cart:
@@ -317,11 +346,6 @@ def remove_from_cart(id):
 
     return success_response(book.serialize(), 201)
 
-
-@app.route('/api/dev/users/delete-all/', methods=['DELETE'])
-def clear_users():
-    db.User.query.delete()
-    return success_response({})
 
 ###### ASSET #######
 # @app.route('/api/upload/', methods=['POST'])

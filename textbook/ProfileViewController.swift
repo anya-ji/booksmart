@@ -76,7 +76,8 @@ class ProfileViewController: UIViewController {
         print("using real user id")
         print("in ProfileViewController")
         
-        let fakeSellerID :Int =  LoginViewController.currentUser.id
+        let fakeSellerID :Int =  LoginViewController.currentUser.id //this is correct now
+        
         
         NetworkManager.getUserInfo(currentUserId: fakeSellerID){ responseData in
             self.retrievedUserInfo = responseData

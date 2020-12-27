@@ -276,7 +276,7 @@ class AddNewBook: UIViewController {
     
     func uploadImage(){
         print("there is a fake book id")
-        let fakeBookID:Int = 1
+        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
         
         let imageData:NSData = bookImage.image!.pngData()! as NSData
         let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))

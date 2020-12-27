@@ -11,7 +11,7 @@ import Alamofire
 
 class NetworkManager {
     
-    private static let host = "http://0.0.0.0:5000"
+    private static let host = "https://hackathonbooksmart.herokuapp.com"
     
     static func getAll(completion: @escaping ([Book]) -> Void) {
         let endpoint = "\(host)/api/books/all/"
@@ -170,7 +170,7 @@ class NetworkManager {
             "password": password
         ]
         
-        let endpoint = "http://0.0.0.0:5000/api/register/"
+        let endpoint = "\(host)/api/register/"
         
         AF.request(endpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { (response) in
             switch response.result {
@@ -199,7 +199,7 @@ class NetworkManager {
             "password": password
         ]
         
-        let endpoint = "http://0.0.0.0:5000/api/login/"
+         let endpoint = "\(host)/api/login/"
         
         AF.request(endpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { (response) in
             switch response.result {
