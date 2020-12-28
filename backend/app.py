@@ -138,7 +138,12 @@ def create_book():
 
     return success_response(data, 201)
 
-
+@app.route('/api/dev/books/delete-all/', methods=["DELETE"])
+def clear_books():
+    db.session.query(Book).delete()
+    db.session.commit()
+    return success_response({})
+    
 ######### USERS ##########
 @app.route('/api/users/<int:id>/')
 def get_user(id):

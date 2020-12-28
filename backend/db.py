@@ -21,7 +21,7 @@ db = SQLAlchemy()
 EXTENSIONS = ['png','jpg','jpeg']
 BASE_DIR = os.getcwd()
 S3_BUCKET = "booksmart"
-S3_BASE_URL = f"https://{S3_BUCKET}.s3-us-east-1.amazonaws.com"
+S3_BASE_URL = f"https://{S3_BUCKET}.s3.amazonaws.com"
 
 book_user_table = db.Table("book_user_table", db.Model.metadata,
     db.Column("book_id", db.Integer, db.ForeignKey("book.id")),

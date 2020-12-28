@@ -48,6 +48,7 @@ class AddNewBook: UIViewController {
         bookTitle.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookTitle.layer.shadowOpacity = 1.0
         bookTitle.layer.shadowRadius = 0.0
+        bookTitle.autocorrectionType = .no
         view.addSubview(bookTitle)
         
         bookAuthor = UITextField()
@@ -61,6 +62,7 @@ class AddNewBook: UIViewController {
         bookAuthor.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookAuthor.layer.shadowOpacity = 1.0
         bookAuthor.layer.shadowRadius = 0.0
+        bookAuthor.autocorrectionType = .no
         view.addSubview(bookAuthor)
         
         bookISBN = UITextField()
@@ -74,6 +76,7 @@ class AddNewBook: UIViewController {
         bookISBN.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookISBN.layer.shadowOpacity = 1.0
         bookISBN.layer.shadowRadius = 0.0
+        bookISBN.keyboardType = .numberPad
         view.addSubview(bookISBN)
         
         bookPrice = UITextField()
@@ -87,6 +90,7 @@ class AddNewBook: UIViewController {
         bookPrice.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookPrice.layer.shadowOpacity = 1.0
         bookPrice.layer.shadowRadius = 0.0
+        bookPrice.keyboardType = .numberPad
         view.addSubview(bookPrice)
         
         courseUsedFor = UITextField()
@@ -100,6 +104,8 @@ class AddNewBook: UIViewController {
         courseUsedFor.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         courseUsedFor.layer.shadowOpacity = 1.0
         courseUsedFor.layer.shadowRadius = 0.0
+        courseUsedFor.autocorrectionType = .no
+        courseUsedFor.autocapitalizationType = .allCharacters
         view.addSubview(courseUsedFor)
         
         bookEdition = UITextField()
@@ -113,6 +119,8 @@ class AddNewBook: UIViewController {
         bookEdition.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookEdition.layer.shadowOpacity = 1.0
         bookEdition.layer.shadowRadius = 0.0
+        bookEdition.autocorrectionType = .no
+        bookEdition.autocapitalizationType = .none
         view.addSubview(bookEdition)
         
         bookConditionPicker = UIPickerView()
@@ -185,7 +193,7 @@ class AddNewBook: UIViewController {
             bookTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             bookTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
             bookTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
-            bookTitle.heightAnchor.constraint(equalToConstant: 30)
+            bookTitle.heightAnchor.constraint(equalToConstant: 30),
         ])
 
         NSLayoutConstraint.activate([
@@ -274,19 +282,19 @@ class AddNewBook: UIViewController {
         showChooseSourceTypeAlertController()
     }
     
-    func uploadImage(){
-        print("there is a fake book id")
-        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
-        
-        let imageData:NSData = bookImage.image!.pngData()! as NSData
-        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-
-        let uploadImageData = uploadBookImage(imageData: imageStr, bookId: fakeBookID)
-        
-        NetworkManager.postBookImage(newBookImage: uploadImageData)
-    }
+//    func uploadImage(){
+//        print("there is a fake book id")
+//        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
+//
+//        let imageData:NSData = bookImage.image!.pngData()! as NSData
+//        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+//
+//        let uploadImageData = uploadBookImage(imageData: imageStr, bookId: fakeBookID)
+//
+//        NetworkManager.postBookImage(newBookImage: uploadImageData)
+//    }
     
-    func uploadBookWithNoImage(){
+    func uploadBook(){
         
         var canUpload = true
         
@@ -367,36 +375,54 @@ class AddNewBook: UIViewController {
         }
         
         
-        let imageData:NSData = bookImage.image!.pngData()! as NSData
+        let imageData:NSData = bookImage.image!.jpegData(compressionQuality: 0.01)! as NSData
         let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         
         
         if canUpload {
             let uploadBook = uploadBookBackEndNoImageStruct(title: userInputTitle, price: userInputPrice, sellerId: fakeSellerID, image: imageStr, author: userInputAuthor, courseName: userInputCourseName, isbn: userInputISBN, edition: userInputEdition, condition: userInputCondition)
-        
             
-            var returnedBookID:Int?
-            NetworkManager.postBookNoImage(newBookDataNoImage: uploadBook){ responseData in
-                returnedBookID = responseData.id
+            //uploading...
+            let alert = UIAlertController(title: nil, message: "Uploading...", preferredStyle: .alert)
+
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.style = UIActivityIndicatorView.Style.medium
+            loadingIndicator.startAnimating()
+
+            alert.view.addSubview(loadingIndicator)
+            present(alert, animated: true, completion: nil)
+            
+            NetworkManager.postBook(newBookData: uploadBook){ responseData in
+
+               //dismiss loading indicator
+                self.dismiss(animated: false, completion: nil)
+                
+                let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+                //set the field back to default
+                self.bookTitle.text = ""
+                self.bookAuthor.text = ""
+                self.bookEdition.text = ""
+                self.bookPrice.text = ""
+                self.bookISBN.text = ""
+                self.courseUsedFor.text = ""
+                self.bookImage.image = UIImage(named: "add_image_icon")
                 
             }
             
-            //set the field back to default
-            self.bookTitle.text = ""
-            self.bookAuthor.text = ""
-            self.bookEdition.text = ""
-            self.bookPrice.text = ""
-            self.bookISBN.text = ""
-            self.courseUsedFor.text = ""
+            
             
         }
         
     }
     
     @objc func confirmButtonTapped(){
-        print("confirm button tapped. do something")
+//        print("confirm button tapped. do something")
 
-        uploadBookWithNoImage()
+        uploadBook()
         TabBarController().selectedIndex = 0
     }
 

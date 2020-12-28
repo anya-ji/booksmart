@@ -91,30 +91,30 @@ struct uploadBookBackEndNoImageStruct: Codable{
     
 }
 
-struct uploadBookBackEndNoImageResponse: Codable{
+struct uploadBookBackEndResponse: Codable{
     var success: Bool
-    var data:uploadBookBackEndNoImageResponseStruct
+    var data:uploadBookBackEndResponseStruct
 }
 
-struct uploadBookBackEndNoImageResponseStruct: Codable{
+struct uploadBookBackEndResponseStruct: Codable{
     var id: Int
-    var image: String
+    var image: [BookImage]
     var title: String
     var author: String
     var courseName: String
     var isbn: String
     var edition: String
-    var price: Double
+    var price: String
     var available: Bool
     var createdAt: String
     var updatedAt: String?
     var sellerId: Int
 }
 
-struct uploadBookImage: Codable{
-    var imageData: String
-    var bookId: Int
-}
+//struct uploadBookImage: Codable{
+//    var imageData: String
+//    var bookId: Int
+//}
 
 struct addCartStruct:Codable{
     var bookId:Int

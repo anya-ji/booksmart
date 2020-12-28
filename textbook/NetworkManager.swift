@@ -11,7 +11,9 @@ import Alamofire
 
 class NetworkManager {
     
-    private static let host = "https://hackathonbooksmart.herokuapp.com"
+//    private static let host = "https://hackathonbooksmart.herokuapp.com"
+    
+    private static let host = "http://0.0.0.0:5000"
     
     static func getAll(completion: @escaping ([Book]) -> Void) {
         let endpoint = "\(host)/api/books/all/"
@@ -34,57 +36,44 @@ class NetworkManager {
         }
     }
     
-    static func postBookNoImage(newBookDataNoImage:uploadBookBackEndNoImageStruct,completion:@escaping (uploadBookBackEndNoImageResponseStruct)->Void){
+    static func postBook(newBookData:uploadBookBackEndNoImageStruct,completion:@escaping (uploadBookBackEndResponseStruct)->Void){
         
         let parameters: [String:Any] = [
-            "title":newBookDataNoImage.title,
-            "price":newBookDataNoImage.price,
-            "sellerId":newBookDataNoImage.sellerId,
-            "image":"data:image/png;base64,"+newBookDataNoImage.image,
-            //"image":newBookDataNoImage.image,
-            "author":newBookDataNoImage.author,
-            "courseName":newBookDataNoImage.courseName,
-            "isbn":newBookDataNoImage.isbn,
-            "edition":newBookDataNoImage.edition
+            "title":newBookData.title,
+            "price":newBookData.price,
+            "sellerId":newBookData.sellerId,
+            "image":"data:image/jpeg;base64,"+newBookData.image,
+            "author":newBookData.author,
+            "courseName":newBookData.courseName,
+            "isbn":newBookData.isbn,
+            "edition":newBookData.edition
         ]
         
-        //print("inside post book no image \(parameters)")
+        
         
         let endpoint = "\(host)/api/books/sell/"
         
         AF.request(endpoint,method: .post,parameters: parameters,encoding: JSONEncoding.default).validate(statusCode: 200..<600).responseData { (response) in
             switch response.result {
-            case .success( let data):
+            case .success(let data):
+             
                 let jsonDecoder = JSONDecoder()
-                if let responseFromBackEnd = try? jsonDecoder.decode(uploadBookBackEndNoImageResponse.self, from: data) {
+                if let responseFromBackEnd = try? jsonDecoder.decode(uploadBookBackEndResponse.self, from: data) {
                     // Instructions: Use completion to handle response
                     let receivedData = responseFromBackEnd.data
+                    
                     completion(receivedData)
                 }
-                print("successfully uploaded a new book (no image) to sell")
+                else{
+                    print("decode error")
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    static func postBookImage(newBookImage:uploadBookImage){
 
-        let parameters: [String: Any] = [
-            "bookId": newBookImage.bookId,
-            "imageData": newBookImage.imageData
-        ]
-        
-        let endpoint = "\(host)/api/upload/"
-        AF.request(endpoint,method: .post,parameters: parameters,encoding: JSONEncoding.default).validate(statusCode: 200..<600).response { (response) in
-            switch response.result{
-            case.success( _):
-                print("successfully uploaded a book image")
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
     
     static func addToCart(book:addCartStruct,currentUserId:Int){
         

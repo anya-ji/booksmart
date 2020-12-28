@@ -94,6 +94,7 @@ class LoginViewController: UIViewController {
         registerFName.isHidden = true
         registerFName.isUserInteractionEnabled = false
         registerFName.translatesAutoresizingMaskIntoConstraints = false
+        registerFName.autocorrectionType = .no
         view.addSubview(registerFName)
         
         registerLName = UITextField()
@@ -109,6 +110,7 @@ class LoginViewController: UIViewController {
         registerLName.isHidden = true
         registerLName.isUserInteractionEnabled = false
         registerLName.translatesAutoresizingMaskIntoConstraints = false
+        registerLName.autocorrectionType = .no
         view.addSubview(registerLName)
         
         registerEmail = UITextField()
@@ -124,6 +126,8 @@ class LoginViewController: UIViewController {
         registerEmail.isHidden = true
         registerEmail.isUserInteractionEnabled = false
         registerEmail.translatesAutoresizingMaskIntoConstraints = false
+        registerEmail.autocapitalizationType = .none
+        registerEmail.autocorrectionType = .no
         view.addSubview(registerEmail)
         
         loginEmail = UITextField()
@@ -139,6 +143,8 @@ class LoginViewController: UIViewController {
         loginEmail.isHidden = false
         loginEmail.isUserInteractionEnabled = true
         loginEmail.translatesAutoresizingMaskIntoConstraints = false
+        loginEmail.autocapitalizationType = .none
+        loginEmail.autocorrectionType = .no
         view.addSubview(loginEmail)
         
         registerPassword = UITextField()
@@ -154,6 +160,9 @@ class LoginViewController: UIViewController {
         registerPassword.isHidden = true
         registerPassword.isUserInteractionEnabled = false
         registerPassword.translatesAutoresizingMaskIntoConstraints = false
+        registerPassword.isSecureTextEntry = true
+        registerPassword.autocorrectionType = .no
+        registerPassword.autocapitalizationType = .none
         view.addSubview(registerPassword)
         
         loginPassword = UITextField()
@@ -169,6 +178,9 @@ class LoginViewController: UIViewController {
         loginPassword.isHidden = false
         loginPassword.isUserInteractionEnabled = true
         loginPassword.translatesAutoresizingMaskIntoConstraints = false
+        loginPassword.isSecureTextEntry = true
+        loginPassword.autocorrectionType = .no
+        loginPassword.autocapitalizationType = .none
         view.addSubview(loginPassword)
         
         // Question Labels
