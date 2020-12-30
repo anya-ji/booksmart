@@ -92,7 +92,8 @@ class SuccessViewController: UIViewController {
     }
     
     @objc func homeButtonTapped() {
-        navigationController?.pushViewController(TabBarController(), animated: true)
+        //navigationController?.pushViewController(TabBarController(), animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
 }

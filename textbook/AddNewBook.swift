@@ -35,9 +35,12 @@ class AddNewBook: UIViewController {
         // Do any additional setup after loading the view.
         bookConditionPickerData = ["Brand New","Slightly Used","Moderately Used","Heavily Used"]
         
+        setupToHideKeyboardOnTapOnView()
+        
         self.view.backgroundColor = .white
         
         bookTitle = UITextField()
+        bookTitle.autocapitalizationType = .none
         bookTitle.translatesAutoresizingMaskIntoConstraints = false
         let bookTitlePlaceHolder=NSAttributedString(string: "Textbook Title", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         bookTitle.textColor = .gray
@@ -52,6 +55,7 @@ class AddNewBook: UIViewController {
         view.addSubview(bookTitle)
         
         bookAuthor = UITextField()
+        bookAuthor.autocapitalizationType = .none
         bookAuthor.translatesAutoresizingMaskIntoConstraints = false
         let bookAuthorPlaceHolder=NSAttributedString(string: "Author(s)", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         bookAuthor.textColor = .gray
@@ -66,6 +70,7 @@ class AddNewBook: UIViewController {
         view.addSubview(bookAuthor)
         
         bookISBN = UITextField()
+        bookISBN.autocapitalizationType = .none
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         let bookISBNPlaceHolder=NSAttributedString(string: "ISBN", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         bookISBN.textColor = .gray
@@ -76,10 +81,10 @@ class AddNewBook: UIViewController {
         bookISBN.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         bookISBN.layer.shadowOpacity = 1.0
         bookISBN.layer.shadowRadius = 0.0
-        bookISBN.keyboardType = .numberPad
         view.addSubview(bookISBN)
         
         bookPrice = UITextField()
+        bookPrice.autocapitalizationType = .none
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         let bookPricePlaceHolder=NSAttributedString(string: "Price", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         bookPrice.textColor = .gray
@@ -109,6 +114,7 @@ class AddNewBook: UIViewController {
         view.addSubview(courseUsedFor)
         
         bookEdition = UITextField()
+        bookEdition.autocapitalizationType = .none
         bookEdition.translatesAutoresizingMaskIntoConstraints = false
         let bookEditionPlaceHolder=NSAttributedString(string: "Edition", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         bookEdition.textColor = .gray
@@ -264,7 +270,7 @@ class AddNewBook: UIViewController {
             bookImage.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -20),
             bookImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
             bookImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
-            bookImage.heightAnchor.constraint(equalToConstant: view.frame.height*0.2)
+            bookImage.heightAnchor.constraint(equalToConstant: view.frame.height*0.15)
         ])
         
         NSLayoutConstraint.activate([
@@ -275,6 +281,21 @@ class AddNewBook: UIViewController {
         ])
         
         
+    }
+    
+    func setupToHideKeyboardOnTapOnView()
+    {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard))
+
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard()
+    {
+        view.endEditing(true)
     }
     
     @objc func tappingImage(recognizer: UIGestureRecognizer){
@@ -299,7 +320,8 @@ class AddNewBook: UIViewController {
         var canUpload = true
         
         let fakeSellerID :Int = LoginViewController.currentUser.id //this is now correct
-
+        //let fakeSellerID :Int = 1
+        
         
         var userInputTitle:String = ""
         if let title = bookTitle.text{
@@ -394,8 +416,10 @@ class AddNewBook: UIViewController {
             present(alert, animated: true, completion: nil)
             
             NetworkManager.postBook(newBookData: uploadBook){ responseData in
-
-               //dismiss loading indicator
+                
+                print("inside post book block")
+                
+                //dismiss loading indicator
                 self.dismiss(animated: false, completion: nil)
                 
                 let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
