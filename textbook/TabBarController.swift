@@ -49,7 +49,12 @@ class TabBarController: UITabBarController {
         //default profile
         let newProfileIcon = Util.resizeImage(image: UIImage(named: "profile_icon")!, targetSize: CGSize(width: 28, height: 28))
         let profile = generateNavController(vc: ProfileViewController(), barTitle: "Profile", pageTitle: "", image: newProfileIcon)
-        viewControllers = [home,addNewBook,cart,profile]
+        
+        //chat
+        let newChatIcon = Util.resizeImage(image: UIImage(named: "chat_icon")!, targetSize: CGSize(width: 28, height: 28))
+        let chat = generateNavController(vc: ChatManagerViewController(), barTitle: "Chat", pageTitle: "Chats", image: newChatIcon)
+        
+        viewControllers = [home,chat,addNewBook,cart,profile]
 
     }
     

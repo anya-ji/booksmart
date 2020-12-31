@@ -9,4 +9,5 @@ target 'textbook' do
   pod 'Alamofire'
   pod 'SAConfettiView'
   pod 'SDWebImage'
+  pod 'MessageKit'
 end

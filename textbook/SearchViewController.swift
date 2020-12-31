@@ -137,7 +137,7 @@ extension SearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //TODO, will push screen containing book info
+        //TODO: push screen containing book info
     }
 }
 
