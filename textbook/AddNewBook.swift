@@ -422,10 +422,10 @@ class AddNewBook: UIViewController {
                 //dismiss loading indicator
                 self.dismiss(animated: false, completion: nil)
                 
-                let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
+//                let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+//                self.present(alert, animated: true, completion: nil)
+//
                 //set the field back to default
                 self.bookTitle.text = ""
                 self.bookAuthor.text = ""
@@ -434,6 +434,9 @@ class AddNewBook: UIViewController {
                 self.bookISBN.text = ""
                 self.courseUsedFor.text = ""
                 self.bookImage.image = UIImage(named: "add_image_icon")
+                
+                let newViewController = ConfirmSellSuccessViewController()
+                self.navigationController?.pushViewController(newViewController, animated: true)
                 
             }
             
@@ -447,7 +450,7 @@ class AddNewBook: UIViewController {
 //        print("confirm button tapped. do something")
 
         uploadBook()
-        TabBarController().selectedIndex = 0
+        //TabBarController().selectedIndex = 0
     }
 
     /*

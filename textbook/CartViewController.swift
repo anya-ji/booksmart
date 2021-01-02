@@ -23,6 +23,8 @@ class CartViewController: UIViewController {
     
     var booksInCart: [Book] = []
     
+    var cartFromBackend : [Book] = []
+    var retrievedUserInfo: userInfoResponseDataStruct!
     
     //fake data
     let currentCart = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300)]
@@ -89,7 +91,7 @@ class CartViewController: UIViewController {
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         view.addSubview(confirmButton)
         
-        retrieveUserCart()
+        //retrieveUserCart()
         setupConstraints()
     }
     
@@ -138,52 +140,65 @@ class CartViewController: UIViewController {
     private func retrieveUserCart(){
         
         print("retrieve user info in cartViewController")
-        print("there is a fake userid inside cartviewcontroller")
         let fakeSellerID :Int = LoginViewController.currentUser.id //this is correct now
         
         var cartFromBackend : [Book] = []
+        self.booksInCart = []
+        self.totalValue = 0
+        self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
+        
+        self.cartTableView.reloadData()
         
         NetworkManager.getUserCart(currentUserId: fakeSellerID){ books in
             cartFromBackend = books
             for item in cartFromBackend{
                 var newItem = item
-                print("handle default image")
-    
-                if self.booksInCart.contains(newItem) == false {
-                    print("this is the new item")
-                    print(newItem)
-                    self.booksInCart.append(newItem)
-                    self.totalValue += Double(newItem.price)!
-                    self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
-                }
+                self.booksInCart.append(newItem)
+                self.totalValue += Double(newItem.price)!
+                self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
+            
             }
             
             //reload
             DispatchQueue.main.async {
                 self.cartTableView.reloadData()
             }
+        
+            
         }
+        
         
     }
     
     private func updateCartAfterDelete(){
         
-        print("update cart after delete")
-        print("there is a fake userid")
-        let fakeSellerID :Int = 1
         
-        var cartFromBackend : [Book] = []
+        print("update cart after delete")
+        let fakeSellerID :Int = LoginViewController.currentUser.id //this is correct now
+        
+        NetworkManager.getUserInfo(currentUserId: fakeSellerID){ responseData in
+            self.retrievedUserInfo = responseData
+            
+            print("retrievedUserInfo.cart is \(self.retrievedUserInfo.cart)")
+        }
+        
+        
+        
         var indexToBeRemoved : Int = 0
         
         NetworkManager.getUserCart(currentUserId: fakeSellerID){ books in
-            cartFromBackend = books
+            self.cartFromBackend = books
 
             //find the index that needs to be removed
             for (index,element) in self.booksInCart.enumerated(){
-                if cartFromBackend.contains(element) == false{
+                if self.cartFromBackend.contains(element) == false{
                     indexToBeRemoved = index
                 }
             }
+            
+            print("cartFromBackend is \(self.cartFromBackend)")
+            
+            
             
             self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
             self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
@@ -267,10 +282,11 @@ extension CartViewController:deleteFromCart{
     func deleteFromCartAction(bookId: Int) {
         
         print("inside CartViewController and there is a fake user id")
-        let fakeSellerID :Int = 1
+        let fakeSellerID :Int = LoginViewController.currentUser.id
+        let updateToken:String = LoginViewController.currentUser.update_token
         
         //call network manager to delete the book
-        NetworkManager.deleteOneBookFromCart(currentUserId: fakeSellerID, bookId: bookId)
+        NetworkManager.deleteOneBookFromCart(currentUserId: fakeSellerID, bookId: bookId,updateToken: updateToken)
         
         //call retrieve user cart to update cart information
         updateCartAfterDelete()

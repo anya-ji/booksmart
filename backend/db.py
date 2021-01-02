@@ -18,7 +18,7 @@ load_dotenv()
 
 db = SQLAlchemy()
 
-EXTENSIONS = ['png','jpg','jpeg']
+EXTENSIONS = ['png','jpg','jpeg','jpe']
 BASE_DIR = os.getcwd()
 S3_BUCKET = "booksmart"
 S3_BASE_URL = f"https://{S3_BUCKET}.s3.amazonaws.com"

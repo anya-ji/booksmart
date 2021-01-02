@@ -75,14 +75,19 @@ class NetworkManager {
     
 
     
-    static func addToCart(book:addCartStruct,currentUserId:Int){
+    static func addToCart(book:addCartStruct,currentUserId:Int,updateToken:String, errorCompletion: @escaping (String) -> Void) {
         
         let parameters:[String:Any] = [
             "bookId":book.bookId
         ]
         
+        let headers:HTTPHeaders = [
+                    "Authorization": "Bearer \(updateToken)",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json" ]
+        
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/add/"
-        AF.request(endpoint,method:.post,parameters:parameters,encoding: JSONEncoding.default).validate().response{ (response) in
+        AF.request(endpoint,method:.post,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
             switch response.result{
             case.success( _):
                 print("successfully added the current book to cart")
@@ -92,16 +97,21 @@ class NetworkManager {
         }
     }
     
-    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int){
+    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int,updateToken:String){
         
         let parameters:[String:Any] = [
             "bookId":bookId
         ]
         
+        let headers:HTTPHeaders = [
+                    "Authorization": "Bearer \(updateToken)",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json" ]
+        
         print("network manager delete book and the parameter is \(parameters)")
         
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/remove/"
-        AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default).validate().response{ (response) in
+        AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
             switch response.result{
             case.success( _):
                 print("successfully removed the current book from cart")
