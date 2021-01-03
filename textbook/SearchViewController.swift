@@ -51,7 +51,7 @@ class SearchViewController: UIViewController {
         searchTableView.dataSource = self
         searchTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: searchCellReuseIdentifier)
         searchTableView.translatesAutoresizingMaskIntoConstraints = false
-        searchTableView.separatorStyle = .none
+        //searchTableView.separatorStyle = .none
         view.addSubview(searchTableView)
         
         setupViews()
@@ -78,6 +78,9 @@ class SearchViewController: UIViewController {
         
     func setupConstraints() {
         
+        let width: CGFloat = view.frame.width
+        //let height: CGFloat = view.frame.height
+        
         NSLayoutConstraint.activate([
             resultLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             resultLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -93,8 +96,8 @@ class SearchViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: width*20/414),
+            searchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: width * -20/414),
             searchTableView.topAnchor.constraint(equalTo: resultLabel.bottomAnchor, constant: 20),
             searchTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -133,7 +136,7 @@ extension SearchViewController: UISearchResultsUpdating {
 extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return view.frame.height*144/896
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

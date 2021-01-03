@@ -47,7 +47,7 @@ class SuccessViewController: UIViewController {
         view.addSubview(successTitle)
         
         successMessage = UITextView()
-        successMessage.text = "Your order has gone through. Be sure to\n contact your seller about the pickup\n location and date."
+        successMessage.text = "Your order has gone through. Be sure to contact your seller about the pickup location and date."
         successMessage.textColor = black
         successMessage.font = .systemFont(ofSize: 15)
         successMessage.textAlignment = .center
@@ -70,6 +70,8 @@ class SuccessViewController: UIViewController {
     }
     
     func setupConstraints() {
+        let width: CGFloat = view.frame.width
+        let height: CGFloat = view.frame.height
         
         NSLayoutConstraint.activate([
             successTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -78,16 +80,16 @@ class SuccessViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             successMessage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            successMessage.topAnchor.constraint(equalTo: successTitle.bottomAnchor, constant: 24),
-            successMessage.widthAnchor.constraint(equalToConstant: 290),
-            successMessage.heightAnchor.constraint(equalToConstant: 75)
+            successMessage.topAnchor.constraint(equalTo: successTitle.bottomAnchor, constant: height*24/896),
+            successMessage.widthAnchor.constraint(equalToConstant: width*290/414),
+            successMessage.heightAnchor.constraint(equalToConstant: height*95/896)
         ])
         
         NSLayoutConstraint.activate([
-            homeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45),
+            homeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: height * -45/896),
             homeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            homeButton.widthAnchor.constraint(equalToConstant: 365),
-            homeButton.heightAnchor.constraint(equalToConstant: 62)
+            homeButton.widthAnchor.constraint(equalToConstant: width*365/414),
+            homeButton.heightAnchor.constraint(equalToConstant: height*62/896)
         ])
     }
     

@@ -9,13 +9,16 @@
 import UIKit
 
 class SearchTableViewCell: UITableViewCell {
-
+    
+    let aqua: UIColor = UIColor(red: 0.168, green: 0.543, blue: 0.567, alpha: 1)
+    
     var bookTitle: UILabel!
     var bookPrice: UILabel!
     var bookAuthors: UILabel!
     var bookEdition: UILabel!
     var bookISBN: UILabel!
     var bookImage: UIImageView!
+    var listingButton: UIButton!
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,31 +26,31 @@ class SearchTableViewCell: UITableViewCell {
         
         bookTitle = UILabel()
         bookTitle.textColor = .black
-        bookTitle.font = .boldSystemFont(ofSize: 20)
+        bookTitle.font = .boldSystemFont(ofSize: 17)
         bookTitle.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookTitle)
         
         bookPrice = UILabel()
-        bookPrice.textColor = .black
-        bookPrice.font = .boldSystemFont(ofSize: 18)
+        bookPrice.textColor = .lightGray
+        bookPrice.font = .systemFont(ofSize: 15)
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookPrice)
         
         bookAuthors = UILabel()
-        bookAuthors.textColor = .black
-        bookAuthors.font = .systemFont(ofSize: 18)
+        bookAuthors.textColor = .lightGray
+        bookAuthors.font = .systemFont(ofSize: 15)
         bookAuthors.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookAuthors)
         
         bookEdition = UILabel()
-        bookEdition.textColor = .black
-        bookEdition.font = .systemFont(ofSize: 18)
+        bookEdition.textColor = .lightGray
+        bookEdition.font = .systemFont(ofSize: 15)
         bookEdition.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookEdition)
         
         bookISBN = UILabel()
-        bookISBN.textColor = .black
-        bookISBN.font = .systemFont(ofSize: 18)
+        bookISBN.textColor = .lightGray
+        bookISBN.font = .systemFont(ofSize: 15)
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookISBN)
         
@@ -58,49 +61,64 @@ class SearchTableViewCell: UITableViewCell {
         bookImage.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookImage)
         
+        listingButton = UIButton()
+        listingButton.layer.cornerRadius = 13
+        listingButton.clipsToBounds = true
+        listingButton.setTitle("See Listing", for: .normal)
+        listingButton.setTitleColor(.white, for: .normal)
+        listingButton.backgroundColor = aqua
+        listingButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(listingButton)
+        
         setupConstraints()
     }
     
     func setupConstraints() {
         
-        let sidePadding: CGFloat = 25
-        let vertPadding: CGFloat = 10
+        let padding: CGFloat = 16
         
         NSLayoutConstraint.activate([
-            bookImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: vertPadding),
-            bookImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -vertPadding),
-            bookImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: sidePadding),
-            bookImage.widthAnchor.constraint(equalToConstant: contentView.frame.width*0.35)
+            bookImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            bookImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            bookImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bookImage.widthAnchor.constraint(equalToConstant: 112)
         ])
         
         NSLayoutConstraint.activate([
-            bookTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: vertPadding),
-            bookTitle.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: sidePadding),
+            bookTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+            bookTitle.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            bookPrice.topAnchor.constraint(equalTo: bookTitle.bottomAnchor),
-            bookPrice.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: sidePadding),
+            bookPrice.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            bookPrice.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookPrice.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            bookAuthors.topAnchor.constraint(equalTo: bookPrice.bottomAnchor),
-            bookAuthors.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: sidePadding),
+            bookAuthors.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 20),
+            bookAuthors.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookAuthors.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             bookEdition.topAnchor.constraint(equalTo: bookAuthors.bottomAnchor),
-            bookEdition.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: sidePadding),
+            bookEdition.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookEdition.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             bookISBN.topAnchor.constraint(equalTo: bookEdition.bottomAnchor),
-            bookISBN.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: sidePadding),
+            bookISBN.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookISBN.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            listingButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            listingButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            listingButton.widthAnchor.constraint(equalToConstant: 110),
+            listingButton.heightAnchor.constraint(equalToConstant: 25)
         ])
         
     }
