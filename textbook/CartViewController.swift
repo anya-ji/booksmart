@@ -96,6 +96,9 @@ class CartViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool){
+        
+        print("inside cart view controller and token is \(LoginViewController.currentUser.update_token)")
+        
         print("inside view did appear")
         retrieveUserCart()
     }
@@ -198,14 +201,14 @@ class CartViewController: UIViewController {
             
             print("cartFromBackend is \(self.cartFromBackend)")
             
-            
-            
-            self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
-            self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
-            
-            //remove by index
-            self.booksInCart.remove(at: indexToBeRemoved)
-            
+//
+//
+//            self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
+//            self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
+//
+//            //remove by index
+//            self.booksInCart.remove(at: indexToBeRemoved)
+//
             //reload
             DispatchQueue.main.async {
                 self.cartTableView.reloadData()

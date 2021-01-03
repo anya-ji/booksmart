@@ -97,7 +97,7 @@ class NetworkManager {
         }
     }
     
-    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int,updateToken:String){
+    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int,updateToken:String,completion:@escaping ([Book])->Void)){
         
         let parameters:[String:Any] = [
             "bookId":bookId
@@ -108,7 +108,9 @@ class NetworkManager {
                     "Accept": "application/json",
                     "Content-Type": "application/json" ]
         
-        print("network manager delete book and the parameter is \(parameters)")
+        print(" inside network manager network manager delete book and the parameter is \(parameters)")
+        print("inside network manger delete one book from cart and the user id id\(currentUserId)")
+        print("updateToken is \(updateToken)")
         
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/remove/"
         AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
