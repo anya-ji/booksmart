@@ -18,7 +18,7 @@ load_dotenv()
 
 db = SQLAlchemy()
 
-EXTENSIONS = ['png','jpg','jpeg']
+EXTENSIONS = ['png','jpg','jpeg','jpe'] # Temporary fix: wack...
 BASE_DIR = os.getcwd()
 S3_BUCKET = "booksmart"
 S3_BASE_URL = f"https://{S3_BUCKET}.s3.amazonaws.com"
@@ -211,4 +211,3 @@ class Asset(db.Model):
 
     except Exception as e:
       print(f'Unable to upload image due to {e}.')
-

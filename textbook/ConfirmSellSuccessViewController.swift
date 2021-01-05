@@ -1,13 +1,16 @@
 //
-//  SuccessViewController.swift
+//  ConfirmSellSuccessViewController.swift
+//  textbook
 //
+//  Created by Zuhao Hua on 12/29/20.
+//  Copyright © 2020 Anya Ji. All rights reserved.
 //
-//  Created by Jessica Wu on 12/9/20.
-//
-import UIKit
+import Foundation
+
+
 import SAConfettiView
 
-class SuccessViewController: UIViewController {
+class ConfirmSellSuccessViewController: UIViewController {
     
     let yellow: CGColor = UIColor(red: 1, green: 0.937, blue: 0.842, alpha: 1).cgColor
     let black: UIColor = UIColor(red: 0.171, green: 0.171, blue: 0.171, alpha: 1)
@@ -37,16 +40,16 @@ class SuccessViewController: UIViewController {
     func setupViews() {
         
         successTitle = UILabel()
-        successTitle.text = "One Step Closer to Success!"
-        successTitle.textColor = black
-        successTitle.font = UIFont.boldSystemFont(ofSize: 28)
+        successTitle.text = "Your book is posted to the market!"
+        successTitle.textColor = pink
+        successTitle.font = UIFont.boldSystemFont(ofSize: 26)
         successTitle.textAlignment = .center
         successTitle.isUserInteractionEnabled = false
         successTitle.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(successTitle)
         
         successMessage = UITextView()
-        successMessage.text = "Your order has gone through. Be sure to\n contact your seller about the pickup\n location and date."
+        successMessage.text = ""
         successMessage.textColor = black
         successMessage.font = .systemFont(ofSize: 15)
         successMessage.textAlignment = .center
@@ -91,8 +94,8 @@ class SuccessViewController: UIViewController {
     }
     
     @objc func homeButtonTapped() {
-        //navigationController?.pushViewController(TabBarController(), animated: true)
-        navigationController?.popViewController(animated: true)
+        navigationController?.pushViewController(TabBarController(), animated: true)
+        //navigationController?.popViewController(animated: true)
     }
 
 }

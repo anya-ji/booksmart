@@ -5,7 +5,6 @@
 //  Created by Zuhao Hua on 12/6/20.
 //  Copyright © 2020 Anya Ji. All rights reserved.
 //
-
 import Foundation
 
 import UIKit
@@ -304,8 +303,13 @@ class ProductInfoView: UIView {
         
         let fakeSellerID :Int = LoginViewController.currentUser.id //this is now correct
         let postStruct = addCartStruct(bookId: bookID)
+        let updateToken:String = LoginViewController.currentUser.update_token
         
-        NetworkManager.addToCart(book: postStruct, currentUserId: fakeSellerID)
+        NetworkManager.addToCart(book: postStruct, currentUserId: fakeSellerID,updateToken: updateToken){
+            (errorMessage) in
+            print("in product info view and the error message is \(errorMessage)")
+            //self.createAlert(message: errorMessage)
+        }
     }
 
 }

@@ -5,7 +5,6 @@
 //  Created by Anya Ji on 11/27/20.
 //  Copyright © 2020 Anya Ji. All rights reserved.
 //
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -27,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 //let rootViewController = TabBarController()
                 //let rootViewController = ProductInfoViewController()
                 let rootViewController = LoginViewController()
-                //let rootViewController = SuccessViewController()
+                //let rootViewController = ConfirmSellSuccessViewController()
                 window.rootViewController = UINavigationController(rootViewController: rootViewController)
                 self.window = window
                 window.makeKeyAndVisible()
@@ -64,4 +63,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-
