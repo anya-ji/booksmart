@@ -5,13 +5,12 @@
 //  Created by Zuhao Hua on 12/5/20.
 //  Copyright © 2020 Anya Ji. All rights reserved.
 //
-
 import Foundation
 import Alamofire
 
 class NetworkManager {
     
-//    private static let host = "https://hackathonbooksmart.herokuapp.com"
+    //    private static let host = "https://hackathonbooksmart.herokuapp.com"
     
     private static let host = "http://0.0.0.0:5000"
     
@@ -56,7 +55,7 @@ class NetworkManager {
         AF.request(endpoint,method: .post,parameters: parameters,encoding: JSONEncoding.default).validate(statusCode: 200..<600).responseData { (response) in
             switch response.result {
             case .success(let data):
-             
+                
                 let jsonDecoder = JSONDecoder()
                 if let responseFromBackEnd = try? jsonDecoder.decode(uploadBookBackEndResponse.self, from: data) {
                     // Instructions: Use completion to handle response
@@ -73,38 +72,78 @@ class NetworkManager {
         }
     }
     
-
     
-    static func addToCart(book:addCartStruct,currentUserId:Int){
+    
+    static func addToCart(book:addCartStruct,currentUserId:Int,updateToken:String, completion:@escaping ([Book])->Void) {
         
         let parameters:[String:Any] = [
             "bookId":book.bookId
         ]
         
+        let headers:HTTPHeaders = [
+            "Authorization": "Bearer \(updateToken)",
+            "Accept": "text/html",
+            "Content-Type": "text/html" ]
+        //        "Accept": "application/json",
+        //        "Content-Type": "application/json" ]
+        
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/add/"
-        AF.request(endpoint,method:.post,parameters:parameters,encoding: JSONEncoding.default).validate().response{ (response) in
+        AF.request(endpoint,method:.post,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
             switch response.result{
-            case.success( _):
-                print("successfully added the current book to cart")
+            case.success(let data):
+                
+                let jsonDecoder = JSONDecoder()
+                if data == nil {
+                    print("no return data")
+                }
+                
+                if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
+                    // Instructions: Use completion to handle response
+                    print(responseFromBackEnd.data.cart)
+                    print("successfully added the current book to cart")
+                    completion(responseFromBackEnd.data.cart)
+                }
+                
+                
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int){
+    static func deleteOneBookFromCart(currentUserId:Int,bookId:Int,updateToken:String,completion:@escaping ([Book])->Void) {
         
         let parameters:[String:Any] = [
             "bookId":bookId
         ]
         
-        print("network manager delete book and the parameter is \(parameters)")
+        let headers:HTTPHeaders = [
+            "Authorization": "Bearer \(updateToken)",
+            "Accept": "text/html",
+            "Content-Type": "text/html" ]
+        
+        print(" inside network manager network manager delete book and the parameter is \(parameters)")
+        print("inside network manger delete one book from cart and the user id id\(currentUserId)")
+        print("updateToken is \(updateToken)")
         
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/remove/"
-        AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default).validate().response{ (response) in
+        AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
             switch response.result{
-            case.success( _):
-                print("successfully removed the current book from cart")
+            case.success(let data):
+                let jsonDecoder = JSONDecoder()
+                if data == nil {
+                    print("no return data")
+                }
+                
+                if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
+                    // Instructions: Use completion to handle response
+                    print("successfully removed the current book from cart")
+                    completion(responseFromBackEnd.data.cart)
+                }
+                
+                
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -118,13 +157,16 @@ class NetworkManager {
         
         AF.request(endpoint,method: .get,encoding: JSONEncoding.default).validate().responseData { (response) in
             switch response.result {
-            case .success( let data):
+            case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data) {
                     // Instructions: Use completion to handle response
+                    print("successfully retrieved user cart info")
+                    print(responseFromBackEnd.data)
+                    print(responseFromBackEnd.data.cart)
                     completion(responseFromBackEnd.data.cart)
                 }
-                print("successfully retrieved user cart info")
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -142,9 +184,10 @@ class NetworkManager {
                 let jsonDecoder = JSONDecoder()
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data) {
                     // Instructions: Use completion to handle response
+                    print("successfully retrieved userinfo")
                     completion(responseFromBackEnd.data)
                 }
-                print("successfully retrieved userinfo")
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -172,7 +215,7 @@ class NetworkManager {
                         let errorMessage = errorResponse.error
                         errorCompletion(errorMessage)
                     } else {
-                        print("Error")
+                        print("Register Error")
                     }
                 }
             case .failure(let error):
@@ -188,7 +231,7 @@ class NetworkManager {
             "password": password
         ]
         
-         let endpoint = "\(host)/api/login/"
+        let endpoint = "\(host)/api/login/"
         
         AF.request(endpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { (response) in
             switch response.result {
@@ -209,11 +252,10 @@ class NetworkManager {
             }
         }
     }
-
     
     
-
+    
+    
     
     
 }
-
