@@ -121,7 +121,7 @@ class CartTableViewCell: UITableViewCell {
             textbookImage.image = UIImage(named: "default_book")
         }
         else{
-            inputbookData.image[0].url
+            
             print("the book name is\(inputbookData.title)")
             print("there is an image url")
             print("the url is \(inputbookData.image[0].url)")

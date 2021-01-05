@@ -26,10 +26,10 @@ class ProductInfoView: UIView {
     var sellerImage: UIImageView!
     var addButton: UIButton!
     var bookID:Int!
-
+    
     init() {
         super.init(frame: CGRect.zero)
-
+        
         backgroundColor = .white
         
         setupViews()
@@ -42,7 +42,7 @@ class ProductInfoView: UIView {
     
     func setupViews() {
         
-            
+        
         bookTitle = UILabel()
         bookTitle.textColor = .black
         bookTitle.textAlignment = .left
@@ -51,7 +51,7 @@ class ProductInfoView: UIView {
         bookTitle.text = "Book Title Goes Here" //there is a config for this
         bookTitle.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookTitle)
-            
+        
         bookAuthor = UILabel()
         bookAuthor.textColor = .black
         bookAuthor.textAlignment = .left
@@ -60,7 +60,7 @@ class ProductInfoView: UIView {
         bookAuthor.text = "Book Author Goes Here" //there is a config for this
         bookAuthor.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookAuthor)
-            
+        
         bookEdition = UILabel()
         bookEdition.textColor = .black
         bookEdition.textAlignment = .left
@@ -78,7 +78,7 @@ class ProductInfoView: UIView {
         bookISBN.text = "Book ISBN Goes Here"
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookISBN)
-            
+        
         bookPrice = UILabel()
         bookPrice.textColor = .black
         bookPrice.textAlignment = .right
@@ -87,7 +87,7 @@ class ProductInfoView: UIView {
         bookPrice.text = "Price" //there is a config for this
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookPrice)
-            
+        
         bookCondition = UILabel()
         bookCondition.textColor = .black
         bookCondition.textAlignment = .right
@@ -113,14 +113,14 @@ class ProductInfoView: UIView {
         classLabel.text = "Used in "
         classLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(classLabel)
-            
+        
         bookImage = UIImageView()
         bookImage.layer.cornerRadius = 20
         bookImage.clipsToBounds = true
         bookImage.image = UIImage(named: "calculus_for_dummies")
         bookImage.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookImage)
-            
+        
         sellerName = UILabel()
         sellerName.textColor = .black
         sellerName.textAlignment = .left
@@ -129,7 +129,7 @@ class ProductInfoView: UIView {
         sellerName.text = "Seller Name Goes Here"
         sellerName.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerName)
-            
+        
         sellerLabel = UILabel()
         sellerLabel.textColor = .black
         sellerLabel.textAlignment = .left
@@ -137,7 +137,7 @@ class ProductInfoView: UIView {
         sellerLabel.text = "About the seller "
         sellerLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerLabel)
-            
+        
         sellerEmail = UILabel()
         sellerEmail.textColor = .lightGray
         sellerEmail.textAlignment = .left
@@ -146,7 +146,7 @@ class ProductInfoView: UIView {
         sellerEmail.text = "Seller Email Goes Here"
         sellerEmail.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerEmail)
-            
+        
         sellerImage = UIImageView()
         sellerImage.layer.cornerRadius = 25
         // temporary image, replace later
@@ -154,73 +154,73 @@ class ProductInfoView: UIView {
         sellerImage.clipsToBounds = true
         sellerImage.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerImage)
-            
+        
         addButton = UIButton()
         addButton.layer.cornerRadius = 20
         addButton.clipsToBounds = true
-        addButton.setTitle("Add to Cart", for: .normal)
+        //        addButton.setTitle("Add to Cart", for: .normal)
         addButton.setTitleColor(.black, for: .normal)
         addButton.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(addButton)
-            
+        
     }
     
     func setupConstraints() {
         
         let padding: CGFloat = 25
-            
+        
         NSLayoutConstraint.activate([
             bookTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 5),
             bookTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             bookTitle.heightAnchor.constraint(equalToConstant: 30)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookImage.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 15),
             bookImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             bookImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             bookImage.bottomAnchor.constraint(equalTo: bookAuthor.topAnchor, constant: -5)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookAuthor.bottomAnchor.constraint(equalTo: sellerLabel.topAnchor, constant: -80),
             bookAuthor.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             bookAuthor.widthAnchor.constraint(equalToConstant: 180),
             bookAuthor.heightAnchor.constraint(equalToConstant: 24)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookEdition.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor),
             bookEdition.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             bookEdition.widthAnchor.constraint(equalToConstant: 180)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookISBN.topAnchor.constraint(equalTo: bookEdition.bottomAnchor),
             bookISBN.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             bookISBN.widthAnchor.constraint(equalToConstant: 180)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookPrice.topAnchor.constraint(equalTo: bookAuthor.topAnchor),
             bookPrice.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             bookPrice.widthAnchor.constraint(equalToConstant: 110)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookCondition.topAnchor.constraint(equalTo: bookPrice.bottomAnchor),
             bookCondition.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             bookCondition.widthAnchor.constraint(equalToConstant: 110)
         ])
-
+        
         NSLayoutConstraint.activate([
             classLabel.topAnchor.constraint(equalTo: bookISBN.bottomAnchor, constant: 12),
             classLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             classLabel.widthAnchor.constraint(equalToConstant: 65)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookClass.topAnchor.constraint(equalTo: bookISBN.bottomAnchor, constant: 12),
             bookClass.leadingAnchor.constraint(equalTo: classLabel.trailingAnchor)
@@ -230,24 +230,24 @@ class ProductInfoView: UIView {
             sellerLabel.topAnchor.constraint(equalTo: addButton.topAnchor, constant: -100),
             sellerLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding)
         ])
-
+        
         NSLayoutConstraint.activate([
             sellerImage.topAnchor.constraint(equalTo: sellerLabel.bottomAnchor, constant: 5),
             sellerImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             sellerImage.widthAnchor.constraint(equalToConstant: 50),
             sellerImage.heightAnchor.constraint(equalToConstant: 50)
         ])
-
+        
         NSLayoutConstraint.activate([
             sellerName.topAnchor.constraint(equalTo: sellerImage.topAnchor),
             sellerName.leadingAnchor.constraint(equalTo: sellerImage.trailingAnchor, constant: 12)
         ])
-            
+        
         NSLayoutConstraint.activate([
             sellerEmail.topAnchor.constraint(equalTo: sellerName.bottomAnchor),
             sellerEmail.leadingAnchor.constraint(equalTo: sellerName.leadingAnchor)
         ])
-            
+        
         NSLayoutConstraint.activate([
             addButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             addButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -255,7 +255,7 @@ class ProductInfoView: UIView {
             addButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
-        
+    
     func configure(inputBookData:Book){
         
         print("need to config")
@@ -265,7 +265,7 @@ class ProductInfoView: UIView {
             bookImage.image = UIImage(named: "default_book")
         }
         else{
-            inputBookData.image[0].url
+            
             print("the book name is\(inputBookData.title)")
             print("there is an image url")
             print("the url is \(inputBookData.image[0].url)")
@@ -276,7 +276,7 @@ class ProductInfoView: UIView {
             //bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
         }
         
-//      bookImage.image = UIImage(named: inputBookData.image)
+        //      bookImage.image = UIImage(named: inputBookData.image)
         bookTitle.text = inputBookData.title
         bookAuthor.text = inputBookData.author
         //bookPrice.text = String(format: "%.2f", inputBookData.price)
@@ -294,22 +294,41 @@ class ProductInfoView: UIView {
             self.sellerEmail.text = retrievedUserInfo.email
             self.sellerName.text = retrievedUserInfo.name        }
         
+        let userID :Int = LoginViewController.currentUser.id
+        NetworkManager.getUserInfo(currentUserId: userID){ responseData in
+            if responseData.cart.contains(inputBookData){
+                self.addButton.setTitle("Remove from Cart", for: .normal)
+            }
+            else{
+                self.addButton.setTitle("Add to Cart", for: .normal)
+            }
+        }
+        
         bookID = inputBookData.id
     }
     
     @objc func addButtonTapped()
     {
-        //TODO - put books into cart
-        
-        let fakeSellerID :Int = LoginViewController.currentUser.id //this is now correct
+        let userID :Int = LoginViewController.currentUser.id
         let postStruct = addCartStruct(bookId: bookID)
         let updateToken:String = LoginViewController.currentUser.update_token
         
-        NetworkManager.addToCart(book: postStruct, currentUserId: fakeSellerID,updateToken: updateToken){
-            (errorMessage) in
-            print("in product info view and the error message is \(errorMessage)")
-            //self.createAlert(message: errorMessage)
+        if addButton.titleLabel?.text == "Add to Cart"{
+            //add to cart
+            NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
+                books in
+                let alert = UIAlertController(title: "Success", message: "added to cart!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.addButton.setTitle("Remove from Cart", for: .normal)
+            }
+        }
+        else{
+            //remove from cart
+            NetworkManager.deleteOneBookFromCart(currentUserId: userID, bookId: bookID,updateToken: updateToken){ books in //returned cart is not used
+                let alert = UIAlertController(title: "Success", message: "removed from cart!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.addButton.setTitle("Add to Cart", for: .normal)
+            }
         }
     }
-
 }

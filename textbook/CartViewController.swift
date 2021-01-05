@@ -25,12 +25,12 @@ class CartViewController: UIViewController {
     var cartFromBackend : [Book] = []
     var retrievedUserInfo: userInfoResponseDataStruct!
     
-    //fake data
-    let currentCart = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300)]
-
+    //    //fake data
+    //    let currentCart = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300)]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
         
@@ -66,7 +66,7 @@ class CartViewController: UIViewController {
         cartTotalLabelLeft.isUserInteractionEnabled = false
         cartTotalLabelLeft.font = .systemFont(ofSize: 20)
         view.addSubview(cartTotalLabelLeft)
-
+        
         cartTotalLabelRight = RightLabel()
         cartTotalLabelRight.translatesAutoresizingMaskIntoConstraints = false
         cartTotalLabelRight.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
@@ -138,11 +138,11 @@ class CartViewController: UIViewController {
             confirmButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
-
+    
     private func retrieveUserCart(){
         
         print("retrieve user info in cartViewController")
-        let fakeSellerID :Int = LoginViewController.currentUser.id //this is correct now
+        let sellerID :Int = LoginViewController.currentUser.id //this is correct now
         
         var cartFromBackend : [Book] = []
         self.booksInCart = []
@@ -151,68 +151,81 @@ class CartViewController: UIViewController {
         
         self.cartTableView.reloadData()
         
-        NetworkManager.getUserCart(currentUserId: fakeSellerID){ books in
+        NetworkManager.getUserCart(currentUserId: sellerID){ books in
             cartFromBackend = books
             for item in cartFromBackend{
-                var newItem = item
+                let newItem = item
                 self.booksInCart.append(newItem)
                 self.totalValue += Double(newItem.price)!
                 self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
-            
+                
             }
             
             //reload
             DispatchQueue.main.async {
                 self.cartTableView.reloadData()
             }
-        
+            
             
         }
         
         
     }
     
-    private func updateCartAfterDelete(){
+    private func updateCartAfterDelete(deletedBookID:Int){
         
         
         print("update cart after delete")
-        let fakeSellerID :Int = LoginViewController.currentUser.id //this is correct now
         
-        NetworkManager.getUserInfo(currentUserId: fakeSellerID){ responseData in
-            self.retrievedUserInfo = responseData
-            
-            print("retrievedUserInfo.cart is \(self.retrievedUserInfo.cart)")
-        }
-        
-        
-        
-        var indexToBeRemoved : Int = 0
-        
-        NetworkManager.getUserCart(currentUserId: fakeSellerID){ books in
-            self.cartFromBackend = books
-
-            //find the index that needs to be removed
-            for (index,element) in self.booksInCart.enumerated(){
-                if self.cartFromBackend.contains(element) == false{
-                    indexToBeRemoved = index
-                }
+        let books = booksInCart
+        booksInCart = []
+        for b in books{
+            if b.id != deletedBookID{
+                booksInCart.append(b)
             }
-            
-            print("cartFromBackend is \(self.cartFromBackend)")
-            
-//
-//
-//            self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
-//            self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
-//
-//            //remove by index
-//            self.booksInCart.remove(at: indexToBeRemoved)
-//
-            //reload
-            DispatchQueue.main.async {
-                self.cartTableView.reloadData()
+            else{
+                self.totalValue -= Double(b.price)!
+                self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
             }
         }
+        
+        //        let sellerID :Int = LoginViewController.currentUser.id //this is correct now
+        
+        //        NetworkManager.getUserInfo(currentUserId: fakeSellerID){ responseData in
+        //            self.retrievedUserInfo = responseData
+        //
+        //            print("retrievedUserInfo.cart is \(self.retrievedUserInfo.cart)")
+        //        }
+        //
+        
+        
+        //        var indexToBeRemoved : Int = 0
+        //
+        //        NetworkManager.getUserCart(currentUserId: sellerID){ books in
+        //            self.cartFromBackend = books
+        
+        //            //find the index that needs to be removed
+        //            for (index,element) in self.booksInCart.enumerated(){
+        //                if self.cartFromBackend.contains(element) == false{
+        //                    indexToBeRemoved = index
+        //                }
+        //            }
+        
+        //            print("cartFromBackend is \(self.cartFromBackend)")
+        //
+        //
+        //
+        //            self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
+        //            self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
+        //
+        //            //remove by index
+        //            self.booksInCart.remove(at: indexToBeRemoved)
+        //
+        //reload
+        DispatchQueue.main.async {
+            self.cartTableView.reloadData()
+        }
+        //        }
         
         
         
@@ -224,16 +237,16 @@ class CartViewController: UIViewController {
         let newViewController = SuccessViewController()
         navigationController?.pushViewController(newViewController, animated: true)
     }
-
+    
     /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension CartViewController:UITableViewDataSource{
@@ -268,14 +281,14 @@ extension CartViewController:UITableViewDelegate{
 }
 
 extension UIView {
-
+    
     func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
-         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-         let mask = CAShapeLayer()
-         mask.path = path.cgPath
-         self.layer.mask = mask
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
     }
-
+    
 }
 
 extension CartViewController:deleteFromCart{
@@ -283,16 +296,16 @@ extension CartViewController:deleteFromCart{
     func deleteFromCartAction(bookId: Int) {
         
         print("inside CartViewController and there is a fake user id")
-        let fakeSellerID :Int = LoginViewController.currentUser.id
+        let sellerID :Int = LoginViewController.currentUser.id
         let updateToken:String = LoginViewController.currentUser.update_token
         
         //call network manager to delete the book
-        NetworkManager.deleteOneBookFromCart(currentUserId: fakeSellerID, bookId: bookId,updateToken: updateToken){ books in
-            print(books)
+        NetworkManager.deleteOneBookFromCart(currentUserId: sellerID, bookId: bookId,updateToken: updateToken){ books in //returned cart is not used
+            //call retrieve user cart to update cart information
+            self.updateCartAfterDelete(deletedBookID: bookId)
         }
         
-        //call retrieve user cart to update cart information
-        updateCartAfterDelete()
+        
         
         
     }

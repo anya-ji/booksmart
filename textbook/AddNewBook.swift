@@ -421,9 +421,9 @@ class AddNewBook: UIViewController {
                 //dismiss loading indicator
                 self.dismiss(animated: false, completion: nil)
                 
-//                let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-//                self.present(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
 //
                 //set the field back to default
                 self.bookTitle.text = ""

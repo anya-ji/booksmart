@@ -50,37 +50,6 @@ def get_book(id):
     data = c.serialize()
     return success_response(data)
 
-# @app.route('/api/books/sell/', methods=["POST"])
-# def create_book():
-#     '''
-#     body:
-#     [required]: title, price, sellerId
-#     [optional]: image, author, courseName, isbn, edition, condition
-#     '''
-#     body = json.loads(request.data)
-#     price = body.get('price')
-
-#     # check necessary fields
-#     if body.get('title') is None or price is None or not (isinstance(price, int) or \
-#         isinstance(price, float)) or body.get('sellerId') is None:
-#         return failure_response('title/price/sellerId is empty or malformed')
-
-#     # check user exists
-#     c = User.query.filter_by(id = body.get('sellerId')).first()
-#     if c is None:
-#         return failure_response('user not found')
-
-#     # create new book
-#     new_book = Book(image=body.get('image',''), title=body.get('title'),\
-#         author=body.get('author',''), courseName=body.get('courseName',''),\
-#             isbn=body.get('isbn',''), edition=body.get('edition',''), condition=body.get('condition',''),\
-#                 price=str(round(price, 2)),sellerId=body.get('sellerId'))
-#     db.session.add(new_book)
-#     db.session.commit()
-#     data = new_book.serialize()
-
-#     return success_response(data, 201)
-
 @app.route('/api/books/sell/', methods=["POST"])
 def create_book():
     '''
@@ -153,20 +122,6 @@ def get_user(id):
     data = c.serialize()
     return success_response(data)
 
-# @app.route('/api/users/', methods=["POST"])
-# def create_user():
-#     '''
-#     body:
-#     [required]: name, email
-#     '''
-#     body = json.loads(request.data)
-#     if body.get('name') is None or body.get('email') is None:
-#         return failure_response('name or email is empty')
-#     new_user = User(name = body.get('name'), email = body.get('email'))
-#     db.session.add(new_user)
-#     db.session.commit()
-#     data = new_user.serialize()
-#     return success_response(data, 201)
 
 @app.route("/api/register/", methods=["POST"])
 def register_account():
@@ -186,7 +141,8 @@ def register_account():
     return json.dumps({
         "session_token": user.session_token,
         "session_expiration": str(user.session_expiration),
-        "update_token": user.update_token
+        "update_token": user.update_token,
+        "id": user.id
         })
 
 @app.route("/api/login/", methods=["POST"])
@@ -260,6 +216,10 @@ def add_to_cart(id):
     if c is None:
         return failure_response('user not found')
 
+    # already in cart
+    if book in c.cart:
+        return failure_response('book already in cart')
+
     # check user is the one who logged in
     if user != c:
         return failure_response('Id does not match token')
@@ -268,7 +228,7 @@ def add_to_cart(id):
     # check user is not adding own book to cart
     if user.is_selling(book):
         print("cannot add own book to cart")
-        return json.dumps({"error": "Cannot add own book to cart."})
+        return failure_response("Cannot add own book to cart.")
 
     # add to cart
     assoc = book_user_table.insert().values(book_id=bookId, user_id=id)
@@ -276,38 +236,8 @@ def add_to_cart(id):
     db.session.commit()
     
     print("added to cart successfully in the backend")
-    return success_response(book.serialize(), 201)
+    return success_response(user.serialize(), 201)
     
-#@app.route('/api/users/<int:id>/cart/add/', methods=["POST"])
-#def add_to_cart(id):
-#    '''
-#    body:
-#    [required]: bookId
-#    '''
-#    body = json.loads(request.data)
-#    bookId = body.get('bookId')
-#
-#    if bookId is None:
-#        return failure_response('bookId is empty')
-#
-#    # get book
-#    book = Book.query.filter_by(id = bookId).first()
-#    if book is None:
-#        return failure_response('book not found')
-#
-#    # get user
-#    user = User.query.filter_by(id = id).first()
-#    if user is None:
-#        return failure_response('user not found')
-#
-#    #TODO: not your own book
-#
-#    # add to cart
-#    assoc = book_user_table.insert().values(book_id=bookId, user_id=id)
-#    db.session.execute(assoc)
-#    db.session.commit()
-#
-#    return success_response(book.serialize(), 201)
 
 @app.route('/api/users/<int:id>/cart/remove/', methods=['DELETE'])
 def remove_from_cart(id):
@@ -322,7 +252,7 @@ def remove_from_cart(id):
 
     user = users_dao.get_user_by_update_token(session_token)
     if not user or not user.verify_update_token(session_token):
-        return json.dumps({"error": "Invalid session token."})
+        return failure_response("Invalid session token.")
     
     body = json.loads(request.data)
     bookId = body.get('bookId')
@@ -352,29 +282,8 @@ def remove_from_cart(id):
         db.session.commit()
     
     print("removed from cart successfully from the backend")
-    return success_response(book.serialize(), 201)
+    return success_response(user.serialize(), 201)
 
-
-###### ASSET #######
-# @app.route('/api/upload/', methods=['POST'])
-# def upload():
-#     body = json.loads(request.data)
-#     imageData = body.get('imageData')
-#     bookId = body.get('bookId')
-
-#     # get book
-#     book = Book.query.filter_by(id = bookId).first()
-#     if book is None:
-#         return failure_response('book not found (create the book first!)')
-
-#     if imageData is None:
-#         return failure_response('No base64 URL to be found.')
-
-#     asset = Asset(imageData=imageData, bookId=bookId)
-#     db.session.add(asset)
-#     db.session.commit()
-    
-#     return success_response(asset.serialize(), 201)
 
 if __name__ == "__main__":
     # port = int(os.environ.get("PORT", 5000))
