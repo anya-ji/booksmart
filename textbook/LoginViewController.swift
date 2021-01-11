@@ -481,6 +481,10 @@ class LoginViewController: UIViewController {
                 self.createAlert(message: errorMessage)
             }
         }
+        
+        loginEmail.text = email
+        loginPassword.text = userInputPassword
+        loginTabTapped()
     }
     
     @objc func loginButtonTapped() {
