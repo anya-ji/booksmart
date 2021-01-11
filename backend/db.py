@@ -143,7 +143,6 @@ class Asset(db.Model):
   extension = db.Column(db.String, nullable=False)
   width = db.Column(db.Integer, nullable=False)
   height = db.Column(db.Integer, nullable=False)
-  # createdAt = db.Column(db.String, default=_get_date)
   createdAt = db.Column(db.DateTime, nullable=False)
 
   bookId = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
