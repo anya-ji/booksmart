@@ -40,6 +40,8 @@ class LoginViewController: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         
+        setupToHideKeyboardOnTapOnView()
+        
         setupBackground()
         setupViews()
         setupConstraints()
@@ -516,7 +518,8 @@ class LoginViewController: UIViewController {
         if canLogIn {
             NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
                 LoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
-                self.navigationController?.pushViewController(TabBarController(), animated: true)
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+                //self.navigationController?.pushViewController(TabBarController(), animated: true)
             }) { (errorMessage) in
                 self.createAlert(message: errorMessage)
             }
@@ -529,6 +532,19 @@ class LoginViewController: UIViewController {
             alert.dismiss(animated: true, completion: nil)
         }))
         present(alert, animated: true, completion: nil)
+    }
+    
+    //setupToHideKeyboardOnTapOnView() and dismissKeyboard()
+    //they are used when we want to dismiss the keyboard when tap outside of UITextField
+    func setupToHideKeyboardOnTapOnView() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+          target: self,
+          action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
 }

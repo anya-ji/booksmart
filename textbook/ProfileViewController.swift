@@ -18,6 +18,7 @@ class ProfileViewController: UIViewController {
     var userPicture: UIImageView!
     var editButton: UIButton!
     var doneButton: UIButton!
+    var logoutButton: UIButton!
     var currentListingLabel: UILabel!
     var previousPurchaseLabel: UILabel!
     var purchasedListingsLabel: UILabel!
@@ -181,6 +182,18 @@ class ProfileViewController: UIViewController {
         editButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(editButton)
         
+        logoutButton = UIButton()
+        logoutButton.clipsToBounds = true
+        logoutButton.setTitle("Log out", for: .normal)
+        logoutButton.setTitleColor(aqua, for: .normal)
+        logoutButton.backgroundColor = .white
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        logoutButton.isUserInteractionEnabled = true
+        logoutButton.isHidden = false
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        
+        
         doneButton = UIButton()
         doneButton.clipsToBounds = true
         doneButton.setTitle("Done", for: .normal)
@@ -219,16 +232,23 @@ class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             editButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: height*0.03),
-            editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -width*0.05),
+            editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: width*0.05),
             editButton.widthAnchor.constraint(equalToConstant: 50),
             editButton.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         NSLayoutConstraint.activate([
             doneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: height*0.03),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -width*0.05),
+            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: width*0.05),
             doneButton.widthAnchor.constraint(equalToConstant: 50),
             doneButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
+        NSLayoutConstraint.activate([
+            logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: height*0.03),
+            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -width*0.05),
+            logoutButton.widthAnchor.constraint(equalToConstant: 80),
+            logoutButton.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         // COMMENTED OUT FOR NOW, uncomment when linked to backend
@@ -259,6 +279,11 @@ class ProfileViewController: UIViewController {
     @objc func tappingImage(recognizer: UIGestureRecognizer){
         //image tapped
         showChooseSourceTypeAlertController()
+    }
+    
+    @objc func logoutButtonTapped(){
+        print("log out button tapped")
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 }
 

@@ -97,7 +97,6 @@ class CartViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool){
         
         print("inside cart view controller and token is \(LoginViewController.currentUser.update_token)")
-        
         print("inside view did appear")
         retrieveUserCart()
     }
@@ -295,7 +294,6 @@ extension CartViewController:deleteFromCart{
     
     func deleteFromCartAction(bookId: Int) {
         
-        print("inside CartViewController and there is a fake user id")
         let sellerID :Int = LoginViewController.currentUser.id
         let updateToken:String = LoginViewController.currentUser.update_token
         

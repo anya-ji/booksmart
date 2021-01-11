@@ -92,7 +92,12 @@ class SuccessViewController: UIViewController {
     
     @objc func homeButtonTapped() {
         //navigationController?.pushViewController(TabBarController(), animated: true)
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
+        //navigationController?.popToViewController(TabBarController(),animated: true)
+        //tabBarController?.selectedIndex = 0
+        
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+        
     }
 
 }
