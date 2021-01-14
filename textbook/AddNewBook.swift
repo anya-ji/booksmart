@@ -395,6 +395,13 @@ class AddNewBook: UIViewController {
             userInputISBN = isbn
         }
         
+        if bookImage.image == UIImage(named: "add_image_icon"){
+            let alert = UIAlertController(title: "Alert", message: "Please upload a photo of your book", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            canUpload = false
+        }
+        
         
         let imageData:NSData = bookImage.image!.jpegData(compressionQuality: 0.01)! as NSData
         let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
