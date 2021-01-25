@@ -91,7 +91,7 @@ class ProductInfoView: UIView {
         bookCondition = UILabel()
         bookCondition.textColor = .black
         bookCondition.textAlignment = .right
-        bookCondition.font = .systemFont(ofSize: 22, weight: .regular)
+        bookCondition.font = .systemFont(ofSize: 18, weight: .regular)
         // temporary placeholder, add later
         bookCondition.text = "Condition"
         bookCondition.translatesAutoresizingMaskIntoConstraints = false
@@ -212,7 +212,7 @@ class ProductInfoView: UIView {
         NSLayoutConstraint.activate([
             bookCondition.topAnchor.constraint(equalTo: bookPrice.bottomAnchor),
             bookCondition.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            bookCondition.widthAnchor.constraint(equalToConstant: 110)
+            bookCondition.widthAnchor.constraint(equalToConstant: 150)
         ])
         
         NSLayoutConstraint.activate([
@@ -257,34 +257,24 @@ class ProductInfoView: UIView {
     }
     
     func configure(inputBookData:Book){
-        
-        print("need to config")
-        
-        
         if inputBookData.image.count == 0 {
             bookImage.image = UIImage(named: "default_book")
         }
         else{
-            
-            print("the book name is\(inputBookData.title)")
-            print("there is an image url")
-            print("the url is \(inputBookData.image[0].url)")
-            
-            //let temp_Image_url = "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"
             bookImage.sd_setImage(with: URL(string: inputBookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
-            
-            //bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
         }
         
         //      bookImage.image = UIImage(named: inputBookData.image)
         bookTitle.text = inputBookData.title
         bookAuthor.text = inputBookData.author
-        //bookPrice.text = String(format: "%.2f", inputBookData.price)
-        bookPrice.text = inputBookData.price
-        bookEdition.text = "Edition is \(inputBookData.edition)"
-        bookISBN.text = inputBookData.isbn
+        bookPrice.text = String(format: "%.2f", inputBookData.price)
+//        bookPrice.text = inputBookData.price
+        bookEdition.text = "Edition: \(inputBookData.edition)"
+        bookISBN.text = "ISBN: \(inputBookData.isbn)"
         bookClass.text = inputBookData.courseName
+        bookCondition.text = inputBookData.condition
         
+        print(inputBookData.courseName)
         
         //get seller name and email
         var retrievedUserInfo: userInfoResponseDataStruct!

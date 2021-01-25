@@ -45,7 +45,8 @@ class NetworkManager {
             "author":newBookData.author,
             "courseName":newBookData.courseName,
             "isbn":newBookData.isbn,
-            "edition":newBookData.edition
+            "edition":newBookData.edition,
+            "condition":newBookData.condition
         ]
         
         

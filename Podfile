@@ -10,4 +10,5 @@ target 'textbook' do
   pod 'SAConfettiView'
   pod 'SDWebImage'
   pod 'MessageKit'
+  pod 'InputBarAccessoryView'
 end

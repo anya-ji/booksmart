@@ -66,6 +66,7 @@ struct Book: Codable,Equatable{
     var createdAt: String
     var updatedAt: String?
     var sellerId: Int
+    var condition: String
     
 }
 

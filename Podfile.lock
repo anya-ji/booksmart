@@ -12,6 +12,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - InputBarAccessoryView
   - MessageKit
   - SAConfettiView
   - SDWebImage
@@ -31,6 +32,6 @@ SPEC CHECKSUMS:
   SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
   SDWebImage: 9169792e9eec3e45bba2a0c02f74bf8bd922d1ee
 
-PODFILE CHECKSUM: ae02ac8bada4cfc332a738dfbb17e4a87e0bca12
+PODFILE CHECKSUM: d8b4325a578cfd5be178c54627b6c4c1bd2f28d4
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.9.3
