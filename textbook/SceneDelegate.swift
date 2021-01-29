@@ -25,8 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 //let rootViewController = CartViewController()
                 //let rootViewController = TabBarController()
                 //let rootViewController = ProductInfoViewController()
-                //let rootViewController = LoginViewController()
-                let rootViewController = ChatViewController()
+                let rootViewController = LoginViewController()
+                //let rootViewController = ChatViewController()
                 window.rootViewController = UINavigationController(rootViewController: rootViewController)
                 self.window = window
                 window.makeKeyAndVisible()

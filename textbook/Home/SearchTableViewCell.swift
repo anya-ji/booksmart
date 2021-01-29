@@ -14,12 +14,12 @@ class SearchTableViewCell: UITableViewCell {
     
     var bookTitle: UILabel!
     var bookPrice: UILabel!
-    var bookAuthors: UILabel!
+    var bookAuthor: UILabel!
     var bookEdition: UILabel!
     var bookISBN: UILabel!
     var bookImage: UIImageView!
     var listingButton: UIButton!
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -36,11 +36,11 @@ class SearchTableViewCell: UITableViewCell {
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bookPrice)
         
-        bookAuthors = UILabel()
-        bookAuthors.textColor = .lightGray
-        bookAuthors.font = .systemFont(ofSize: 15)
-        bookAuthors.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(bookAuthors)
+        bookAuthor = UILabel()
+        bookAuthor.textColor = .lightGray
+        bookAuthor.font = .systemFont(ofSize: 15)
+        bookAuthor.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(bookAuthor)
         
         bookEdition = UILabel()
         bookEdition.textColor = .lightGray
@@ -97,13 +97,13 @@ class SearchTableViewCell: UITableViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            bookAuthors.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 20),
-            bookAuthors.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
-            bookAuthors.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 20),
+            bookAuthor.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
+            bookAuthor.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            bookEdition.topAnchor.constraint(equalTo: bookAuthors.bottomAnchor),
+            bookEdition.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor),
             bookEdition.leadingAnchor.constraint(equalTo: bookImage.trailingAnchor,constant: padding),
             bookEdition.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
@@ -123,14 +123,25 @@ class SearchTableViewCell: UITableViewCell {
         
     }
     
-    func configure(inputbookData:bookData) {
-        bookImage.image = UIImage(named: inputbookData.bookImageName)
-        bookTitle.text = inputbookData.title
-        let displayPrice: String = String(format: "%.2f", inputbookData.sellPrice)
-        bookPrice.text = "$" + displayPrice
-        bookAuthors.text = inputbookData.author
-        bookEdition.text = "Edition Placeholder"
-        bookISBN.text = "ISBN Placeholder"
+    func configure(inputBookData:Book) {
+        
+    
+        
+        if inputBookData.image.count == 0 {
+            bookImage.image = UIImage(named: "default_book")
+        }
+        else{
+            bookImage.sd_setImage(with: URL(string: inputBookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
+        }
+        
+        //      bookImage.image = UIImage(named: inputBookData.image)
+        bookTitle.text = inputBookData.title
+        bookAuthor.text = inputBookData.author
+        bookPrice.text = "$\(String(format: "%.2f", inputBookData.price))"
+        bookEdition.text = "Edition: \(inputBookData.edition)"
+        bookISBN.text = "ISBN: \(inputBookData.isbn)"
+//        bookClass.text = inputBookData.courseName
+//        bookCondition.text = inputBookData.condition
     }
     
     required init?(coder: NSCoder) {

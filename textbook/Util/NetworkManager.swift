@@ -35,6 +35,28 @@ class NetworkManager {
         }
     }
     
+    static func searchBooks(name:String, completion: @escaping ([Book]) -> Void) {
+           let endpoint = "\(host)/api/books/search/\(name)"
+           AF.request(endpoint, method: .get).validate().responseData { response in
+               
+               switch response.result {
+               case .success(let data):
+                   let jsonDecoder = JSONDecoder()
+                   if let recentlyAddedResponse = try? jsonDecoder.decode(RecentlyAdded.self, from: data) {
+                       // Instructions: Use completion to handle response
+                       let receivedData = recentlyAddedResponse.data
+                       completion(receivedData)
+                   }
+                   else{
+                       print("could not decode data")
+                   }
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+           }
+       }
+       
+    
     static func postBook(newBookData:uploadBookBackEndNoImageStruct,completion:@escaping (uploadBookBackEndResponseStruct)->Void){
         
         let parameters: [String:Any] = [

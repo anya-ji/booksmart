@@ -50,6 +50,16 @@ def get_book(id):
     data = c.serialize()
     return success_response(data)
 
+@app.route('/api/books/search/<name>')
+def search_books(name):
+    c = Book.query.filter(Book.title.like(f'%{name}%') | Book.isbn.like(f'{name}%'))
+    if c is None:
+        return failure_response('book not found')
+    data = []
+    for book in c:
+        data.append(book.serialize())
+    return success_response(data)
+
 @app.route('/api/books/sell/', methods=["POST"])
 def create_book():
     '''

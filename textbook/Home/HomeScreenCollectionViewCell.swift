@@ -94,23 +94,20 @@ class HomeScreenCollectionViewCell: UICollectionViewCell{
     
     func configure(inputbookData:Book){
         
-        print("need to config in HomeScreenCollectionViewCell")
+        
         
         if inputbookData.image.count == 0 {
             bookImage.image = UIImage(named: "default_book")
         }
         else{
-            inputbookData.image[0].url
-            print("the book name is\(inputbookData.title)")
-            print("there is an image url")
-            print("the url is \(inputbookData.image[0].url)")
             
-            //let temp_Image_url = "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"
+            
+            
             bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
             
-            //bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
+            
         }
-
+        
         bookTitle.text = inputbookData.title
         bookAuthor.text = inputbookData.author
         bookCourse.text = inputbookData.courseName

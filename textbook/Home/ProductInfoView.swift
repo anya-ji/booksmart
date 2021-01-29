@@ -267,8 +267,7 @@ class ProductInfoView: UIView {
         //      bookImage.image = UIImage(named: inputBookData.image)
         bookTitle.text = inputBookData.title
         bookAuthor.text = inputBookData.author
-        bookPrice.text = String(format: "%.2f", inputBookData.price)
-//        bookPrice.text = inputBookData.price
+        bookPrice.text = "$\(String(format: "%.2f", inputBookData.price))"
         bookEdition.text = "Edition: \(inputBookData.edition)"
         bookISBN.text = "ISBN: \(inputBookData.isbn)"
         bookClass.text = inputBookData.courseName

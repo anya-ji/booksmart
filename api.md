@@ -57,7 +57,7 @@ Deactivate the virtual environment by `deactivate`.
 
   
 
-**Updated: 12.15.2020**
+**Updated: 01.29.2021**
 
   
 
@@ -104,6 +104,28 @@ Get book by id.
 `{"success": true, "data": {"id": 1, "image": "", "title": "test", "author": "DG", "courseName": "CS2110", "isbn":"DS12838", "edition": "2", "price": "100.12", "available": true, "createdAt": "2020-11-30 22:57:21.163812", "updatedAt":
 
 null, "sellerId": 1}}`
+
+
+
+## /api/books/\<name\>/
+
+  
+**[GET]**
+Ambiguous search of books with title or isbn.
+
+\<name\>: search string
+
+  
+
+**Request body:** /
+
+  
+
+**Sample response:**
+
+`{"success": true, "data": [{"id": 1, "image": "", "title": "test", "author": "DG", "courseName": "CS2110", "isbn":"DS12838", "edition": "2", "price": "100.12", "available": true, "createdAt": "2020-11-30 22:57:21.163812", "updatedAt":
+
+null, "sellerId": 1}]}`
 
   
 
