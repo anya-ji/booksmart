@@ -267,13 +267,12 @@ class ProductInfoView: UIView {
         //      bookImage.image = UIImage(named: inputBookData.image)
         bookTitle.text = inputBookData.title
         bookAuthor.text = inputBookData.author
-        bookPrice.text = "$\(String(format: "%.2f", inputBookData.price))"
+        let price = (inputBookData.price as NSString).floatValue
+        bookPrice.text = "$\(String(format: "%.2f", price))"
         bookEdition.text = "Edition: \(inputBookData.edition)"
         bookISBN.text = "ISBN: \(inputBookData.isbn)"
         bookClass.text = inputBookData.courseName
         bookCondition.text = inputBookData.condition
-        
-        print(inputBookData.courseName)
         
         //get seller name and email
         var retrievedUserInfo: userInfoResponseDataStruct!

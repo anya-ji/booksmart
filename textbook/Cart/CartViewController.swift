@@ -25,9 +25,7 @@ class CartViewController: UIViewController {
     var cartFromBackend : [Book] = []
     var retrievedUserInfo: userInfoResponseDataStruct!
     
-    //    //fake data
-    //    let currentCart = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300)]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,9 +93,6 @@ class CartViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool){
-        
-        print("inside cart view controller and token is \(LoginViewController.currentUser.update_token)")
-        print("inside view did appear")
         retrieveUserCart()
     }
     
@@ -140,7 +135,6 @@ class CartViewController: UIViewController {
     
     private func retrieveUserCart(){
         
-        print("retrieve user info in cartViewController")
         let sellerID :Int = LoginViewController.currentUser.id //this is correct now
         
         var cartFromBackend : [Book] = []
@@ -164,17 +158,12 @@ class CartViewController: UIViewController {
             DispatchQueue.main.async {
                 self.cartTableView.reloadData()
             }
-            
-            
         }
         
         
     }
     
     private func updateCartAfterDelete(deletedBookID:Int){
-        
-        
-        print("update cart after delete")
         
         let books = booksInCart
         booksInCart = []
@@ -187,48 +176,12 @@ class CartViewController: UIViewController {
                 self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
             }
         }
-        
-        //        let sellerID :Int = LoginViewController.currentUser.id //this is correct now
-        
-        //        NetworkManager.getUserInfo(currentUserId: fakeSellerID){ responseData in
-        //            self.retrievedUserInfo = responseData
-        //
-        //            print("retrievedUserInfo.cart is \(self.retrievedUserInfo.cart)")
-        //        }
-        //
-        
-        
-        //        var indexToBeRemoved : Int = 0
-        //
-        //        NetworkManager.getUserCart(currentUserId: sellerID){ books in
-        //            self.cartFromBackend = books
-        
-        //            //find the index that needs to be removed
-        //            for (index,element) in self.booksInCart.enumerated(){
-        //                if self.cartFromBackend.contains(element) == false{
-        //                    indexToBeRemoved = index
-        //                }
-        //            }
-        
-        //            print("cartFromBackend is \(self.cartFromBackend)")
-        //
-        //
-        //
-        //            self.totalValue -= Double(self.booksInCart[indexToBeRemoved].price)!
-        //            self.cartTotalLabelRight.text = String(format: "%.2f", self.totalValue)
-        //
-        //            //remove by index
-        //            self.booksInCart.remove(at: indexToBeRemoved)
-        //
+ 
         //reload
         DispatchQueue.main.async {
             self.cartTableView.reloadData()
         }
-        //        }
-        
-        
-        
-        
+
     }
     
     
@@ -237,15 +190,7 @@ class CartViewController: UIViewController {
         navigationController?.pushViewController(newViewController, animated: true)
     }
     
-    /*
-     // MARK: - Navigation
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+   
 }
 
 extension CartViewController:UITableViewDataSource{

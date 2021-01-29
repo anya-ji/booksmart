@@ -27,7 +27,7 @@ class NetworkManager {
                     completion(receivedData)
                 }
                 else{
-                    print("could not decode data")
+                    print("could not decode data at getting all books")
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -48,7 +48,7 @@ class NetworkManager {
                        completion(receivedData)
                    }
                    else{
-                       print("could not decode data")
+                       print("could not decode data at searching books")
                    }
                case .failure(let error):
                    print(error.localizedDescription)
@@ -87,7 +87,7 @@ class NetworkManager {
                     completion(receivedData)
                 }
                 else{
-                    print("decode error")
+                    print("decode error at posting a new book")
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -121,9 +121,7 @@ class NetworkManager {
                 }
                 
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
-                    // Instructions: Use completion to handle response
-                    print(responseFromBackEnd.data.cart)
-                    print("successfully added the current book to cart")
+                  
                     completion(responseFromBackEnd.data.cart)
                 }
                 
@@ -146,10 +144,6 @@ class NetworkManager {
             "Accept": "text/html",
             "Content-Type": "text/html" ]
         
-        print(" inside network manager network manager delete book and the parameter is \(parameters)")
-        print("inside network manger delete one book from cart and the user id id\(currentUserId)")
-        print("updateToken is \(updateToken)")
-        
         let endpoint = "\(host)/api/users/\(currentUserId)/cart/remove/"
         AF.request(endpoint,method:.delete,parameters:parameters,encoding: JSONEncoding.default,headers: headers).validate().response{ (response) in
             switch response.result{
@@ -160,13 +154,9 @@ class NetworkManager {
                 }
                 
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
-                    // Instructions: Use completion to handle response
-                    print("successfully removed the current book from cart")
                     completion(responseFromBackEnd.data.cart)
                 }
-                
-                
-                
+ 
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -183,10 +173,6 @@ class NetworkManager {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data) {
-                    // Instructions: Use completion to handle response
-                    print("successfully retrieved user cart info")
-                    print(responseFromBackEnd.data)
-                    print(responseFromBackEnd.data.cart)
                     completion(responseFromBackEnd.data.cart)
                 }
                 
@@ -206,8 +192,6 @@ class NetworkManager {
             case .success( let data):
                 let jsonDecoder = JSONDecoder()
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data) {
-                    // Instructions: Use completion to handle response
-                    print("successfully retrieved userinfo")
                     completion(responseFromBackEnd.data)
                 }
                 

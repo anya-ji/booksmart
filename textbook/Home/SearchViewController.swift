@@ -34,9 +34,6 @@ class SearchViewController: UIViewController {
         
         self.view.backgroundColor = .white
         
-        //        //fake data
-        //        books = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300),bookData(imageName: "introduction_to_c_programming", inputTitle: "Introduction to C++ programming", inputAuthor: "John Doe", inputCourseName: "CS 101",inputSellType: .exchange,inputSellPrice: 0),bookData(imageName: "NLP_the_essential_guide", inputTitle: "NLP the Essential Guide", inputAuthor: "Tess Johnson", inputCourseName: "CS 401",inputSellType: .exchange,inputSellPrice: 0)]
-        
         navigationItem.searchController = searchControllerOne
         searchControllerOne.searchResultsUpdater = self
         searchControllerOne.hidesNavigationBarDuringPresentation = false
@@ -104,20 +101,10 @@ class SearchViewController: UIViewController {
     }
     
     func filterForSearchText(_  searchText: String) {
-        
-        //        filteredBooks = books.filter { (book: bookData) -> Bool in
-        //            let value: Bool = book.author.lowercased().contains(searchText.lowercased())
-        //                || book.title.lowercased().contains(searchText.lowercased())
-        //            return value
-        // ISBN not yet added because fake data does not have ISBN attribute; when adding ISBN, just append
-        // "|| book.ISBN.contains(searchText)" at the end of the let value:...
-        //}
-        
         NetworkManager.searchBooks(name: searchText) { (books) in
             self.filteredBooks = books
             self.reloadTableView()
         }
-
     }
     
     func reloadTableView() {
@@ -158,6 +145,16 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: searchCellReuseIdentifier, for: indexPath) as! SearchTableViewCell
         cell.configure(inputBookData: filteredBooks[indexPath.item])
+        cell.productInfoDelegate = self
         return cell
+    }
+}
+
+
+extension SearchViewController: SearchShowProductInfoProtocol{
+    
+    func showProductInfoFromSearch(inputBook: Book) {
+        let productInfo = ProductInfoViewController(inputBook: inputBook)
+        navigationController?.pushViewController(productInfo, animated: true)
     }
 }

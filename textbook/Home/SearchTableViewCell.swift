@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SearchShowProductInfoProtocol: class {
+    func showProductInfoFromSearch(inputBook:Book)
+}
+
 class SearchTableViewCell: UITableViewCell {
     
     let aqua: UIColor = UIColor(red: 0.168, green: 0.543, blue: 0.567, alpha: 1)
@@ -19,6 +23,10 @@ class SearchTableViewCell: UITableViewCell {
     var bookISBN: UILabel!
     var bookImage: UIImageView!
     var listingButton: UIButton!
+    
+    var book = Book(id: -1, image: [], title: "", author: "", courseName: "", isbn: "", edition: "", price: "", available: false, createdAt: "", updatedAt: "", sellerId: -1, condition: "")
+    
+    weak var productInfoDelegate: SearchShowProductInfoProtocol?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,6 +76,8 @@ class SearchTableViewCell: UITableViewCell {
         listingButton.setTitleColor(.white, for: .normal)
         listingButton.backgroundColor = aqua
         listingButton.translatesAutoresizingMaskIntoConstraints = false
+        listingButton.addTarget(self, action: #selector(listingButtonTapped), for: .touchUpInside)
+        
         contentView.addSubview(listingButton)
         
         setupConstraints()
@@ -124,9 +134,6 @@ class SearchTableViewCell: UITableViewCell {
     }
     
     func configure(inputBookData:Book) {
-        
-    
-        
         if inputBookData.image.count == 0 {
             bookImage.image = UIImage(named: "default_book")
         }
@@ -137,15 +144,23 @@ class SearchTableViewCell: UITableViewCell {
         //      bookImage.image = UIImage(named: inputBookData.image)
         bookTitle.text = inputBookData.title
         bookAuthor.text = inputBookData.author
-        bookPrice.text = "$\(String(format: "%.2f", inputBookData.price))"
+        let price = (inputBookData.price as NSString).floatValue
+        bookPrice.text = "$\(String(format: "%.2f", price))"
         bookEdition.text = "Edition: \(inputBookData.edition)"
         bookISBN.text = "ISBN: \(inputBookData.isbn)"
-//        bookClass.text = inputBookData.courseName
-//        bookCondition.text = inputBookData.condition
+        //        bookClass.text = inputBookData.courseName
+        //        bookCondition.text = inputBookData.condition
+        
+        book = inputBookData
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func listingButtonTapped(){
+        productInfoDelegate?.showProductInfoFromSearch(inputBook: book)
+    }
+    
 }
+

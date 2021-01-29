@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeScreenController: UIViewController {
-
+    
     let searchControllerOne = UISearchController(searchResultsController: nil)
     var homeScreenUITable: UITableView!
     var homeScreenUITableHeight: CGFloat!
@@ -17,15 +17,9 @@ class HomeScreenController: UIViewController {
     
     var recentlyAdded: [Book] = []
     var lowestSellingPrice: [Book] = []
- 
-//    //fake data
-//    let addedFakeData = [bookData(imageName: "calculus_for_dummies", inputTitle: "Calculus for Dummies", inputAuthor: "Bob Smith", inputCourseName: "Math 101",inputSellType: .sell,inputSellPrice: 100),bookData(imageName: "international_economics", inputTitle: "International Economics", inputAuthor: "Thomas A. Pugel", inputCourseName: "Econ 201",inputSellType: .sell,inputSellPrice: 200),bookData(imageName: "introduction_to_psychology", inputTitle: "Introduction To Psychology", inputAuthor: "John Smith", inputCourseName: "PSY 110",inputSellType: .sell,inputSellPrice: 300)]
-//    let lowestFakeData = [bookData(imageName: "introduction_to_c_programming", inputTitle: "Introduction to C++ programming", inputAuthor: "John Doe", inputCourseName: "CS 101",inputSellType: .exchange,inputSellPrice: 0),bookData(imageName: "NLP_the_essential_guide", inputTitle: "NLP the Essential Guide", inputAuthor: "Tess Johnson", inputCourseName: "CS 401",inputSellType: .exchange,inputSellPrice: 0)]
-//
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
         setupBackground()
         homeScreenUITableHeight = view.frame.height*0.6
         
@@ -53,17 +47,17 @@ class HomeScreenController: UIViewController {
         homeScreenUITable.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
         view.addSubview(homeScreenUITable)
         
-//        //refresh
-//        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
-//        homeScreenUITable.refreshControl = refreshControl
-//
+        //        //refresh
+        //        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        //        homeScreenUITable.refreshControl = refreshControl
+        //
         
         getAll()
         setupConstraints()
         
         
     }
-
+    
     override func viewDidAppear(_ animated: Bool){
         updateAll()
     }
@@ -81,7 +75,7 @@ class HomeScreenController: UIViewController {
     }
     
     func setupConstraints(){
-
+        
         NSLayoutConstraint.activate([
             homeScreenUITable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             homeScreenUITable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -99,13 +93,12 @@ class HomeScreenController: UIViewController {
         NetworkManager.getAll{ books in
             allFromBackend = books
             for item in allFromBackend{
-                var newItem = item
-                print("handle default image")
+                let newItem = item
                 
                 self.lowestSellingPrice.append(newItem)
                 self.recentlyAdded.append(newItem)
             }
-
+            
             self.recentlyAdded = self.recentlyAdded.sorted(by: { $0.createdAt > $1.createdAt })
             self.lowestSellingPrice = self.lowestSellingPrice.sorted(by: { $0.price < $1.price })
             
@@ -117,20 +110,14 @@ class HomeScreenController: UIViewController {
     }
     
     func updateAll(){
-        
-        print("update recently added")
-        
         var allFromBackend : [Book] = []
         
         NetworkManager.getAll{ books in
             allFromBackend = books
             for item in allFromBackend{
                 let newItem = item
-                print("handle default image")
-    
                 if self.recentlyAdded.contains(newItem) == false {
-                    print("this is the new item")
-                    print(newItem)
+                    
                     self.recentlyAdded.append(newItem)
                 }
                 
@@ -150,18 +137,18 @@ class HomeScreenController: UIViewController {
         }
     }
     
-//    @objc func refresh(_ sender: AnyObject) {
-//       // Code to refresh
-//        updateRecentlyAdded()
-//        refreshControl.endRefreshing()
-//    }
+    //    @objc func refresh(_ sender: AnyObject) {
+    //       // Code to refresh
+    //        updateRecentlyAdded()
+    //        refreshControl.endRefreshing()
+    //    }
     
     
     func filterForSearchText(_  searchText: String) {
         // Intentionally Left Empty
     }
     
-
+    
 }
 
 extension HomeScreenController:UITableViewDataSource{
@@ -207,9 +194,9 @@ extension HomeScreenController:ShowProductInfoProtocol{
         navigationController?.pushViewController(productInfo, animated: true)
     }
 }
-    
+
 extension HomeScreenController: UISearchResultsUpdating {
-        
+    
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         filterForSearchText(searchBar.text!)

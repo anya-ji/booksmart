@@ -107,13 +107,7 @@ class CartTableViewCell: UITableViewCell {
             deleteButton.widthAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
-//    func configure(inputbookData:bookData){
-//        textbookImage.image = UIImage(named: inputbookData.bookImageName)
-//        textbookTitle.text = inputbookData.title
-//        let displayPrice: String = String(format: "%.2f", inputbookData.sellPrice)
-//        textbookPriceLabel.text = displayPrice
-//    }
+
     
     func configure(inputbookData:Book){
         
@@ -121,15 +115,8 @@ class CartTableViewCell: UITableViewCell {
             textbookImage.image = UIImage(named: "default_book")
         }
         else{
-            
-            print("the book name is\(inputbookData.title)")
-            print("there is an image url")
-            print("the url is \(inputbookData.image[0].url)")
-            
-            //let temp_Image_url = "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"
             textbookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
-            
-            //bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
+
         }
         
         
