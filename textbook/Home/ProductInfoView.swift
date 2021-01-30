@@ -9,6 +9,10 @@ import Foundation
 
 import UIKit
 
+protocol ShowChatProtocol: class {
+    func showChat(inputBook:Book, buyer:UserInfo, seller: UserInfo)
+}
+
 class ProductInfoView: UIView {
     
     var bookTitle: UILabel!
@@ -26,6 +30,12 @@ class ProductInfoView: UIView {
     var sellerImage: UIImageView!
     var addButton: UIButton!
     var bookID:Int!
+    
+    var book:Book!
+    var seller: UserInfo!
+    var buyer: UserInfo!
+    
+    weak var chatDelegate: ShowChatProtocol?
     
     init() {
         super.init(frame: CGRect.zero)
@@ -47,8 +57,6 @@ class ProductInfoView: UIView {
         bookTitle.textColor = .black
         bookTitle.textAlignment = .left
         bookTitle.font = .systemFont(ofSize: 22, weight: .bold)
-        // temporary placeholder, add later
-        bookTitle.text = "Book Title Goes Here" //there is a config for this
         bookTitle.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookTitle)
         
@@ -56,8 +64,6 @@ class ProductInfoView: UIView {
         bookAuthor.textColor = .black
         bookAuthor.textAlignment = .left
         bookAuthor.font = .systemFont(ofSize: 15, weight: .regular)
-        // temporary placeholder, add later
-        bookAuthor.text = "Book Author Goes Here" //there is a config for this
         bookAuthor.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookAuthor)
         
@@ -65,8 +71,6 @@ class ProductInfoView: UIView {
         bookEdition.textColor = .black
         bookEdition.textAlignment = .left
         bookEdition.font = .systemFont(ofSize: 15, weight: .regular)
-        // temporary placeholder, add later
-        bookEdition.text = "Book Edition Goes Here"
         bookEdition.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookEdition)
         
@@ -74,8 +78,6 @@ class ProductInfoView: UIView {
         bookISBN.textColor = .black
         bookISBN.textAlignment = .left
         bookISBN.font = .systemFont(ofSize: 15, weight: .regular)
-        // temporary placeholder, add later
-        bookISBN.text = "Book ISBN Goes Here"
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookISBN)
         
@@ -83,8 +85,6 @@ class ProductInfoView: UIView {
         bookPrice.textColor = .black
         bookPrice.textAlignment = .right
         bookPrice.font = .systemFont(ofSize: 22, weight: .bold)
-        // temporary placeholder, add later
-        bookPrice.text = "Price" //there is a config for this
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookPrice)
         
@@ -92,8 +92,6 @@ class ProductInfoView: UIView {
         bookCondition.textColor = .black
         bookCondition.textAlignment = .right
         bookCondition.font = .systemFont(ofSize: 18, weight: .regular)
-        // temporary placeholder, add later
-        bookCondition.text = "Condition"
         bookCondition.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookCondition)
         
@@ -101,8 +99,6 @@ class ProductInfoView: UIView {
         bookClass.textColor = .black
         bookClass.textAlignment = .left
         bookClass.font = .systemFont(ofSize: 18, weight: .regular)
-        // temporary placeholder, add later
-        bookClass.text = "Book Class Goes Here"
         bookClass.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookClass)
         
@@ -117,7 +113,7 @@ class ProductInfoView: UIView {
         bookImage = UIImageView()
         bookImage.layer.cornerRadius = 20
         bookImage.clipsToBounds = true
-        bookImage.image = UIImage(named: "calculus_for_dummies")
+        bookImage.image = UIImage()
         bookImage.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookImage)
         
@@ -125,8 +121,6 @@ class ProductInfoView: UIView {
         sellerName.textColor = .black
         sellerName.textAlignment = .left
         sellerName.font = .systemFont(ofSize: 20, weight: .bold)
-        // temporary placeholder, add later
-        sellerName.text = "Seller Name Goes Here"
         sellerName.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerName)
         
@@ -142,15 +136,13 @@ class ProductInfoView: UIView {
         sellerEmail.textColor = .lightGray
         sellerEmail.textAlignment = .left
         sellerEmail.font = .systemFont(ofSize: 15, weight: .regular)
-        // temporary placeholder, add later
-        sellerEmail.text = "Seller Email Goes Here"
         sellerEmail.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerEmail)
         
         sellerImage = UIImageView()
         sellerImage.layer.cornerRadius = 25
         // temporary image, replace later
-        sellerImage.image = UIImage(named: "introduction_to_psychology")
+        sellerImage.image = UIImage(systemName: "person.circle")
         sellerImage.clipsToBounds = true
         sellerImage.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerImage)
@@ -159,10 +151,11 @@ class ProductInfoView: UIView {
         addButton.layer.cornerRadius = 20
         addButton.clipsToBounds = true
         //        addButton.setTitle("Add to Cart", for: .normal)
-        addButton.setTitleColor(.black, for: .normal)
-        addButton.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        addButton.setTitleColor(.white, for: .normal)
+        addButton.backgroundColor = .custom_pink
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.setTitle("Message Seller", for: .normal)
         self.addSubview(addButton)
         
     }
@@ -275,48 +268,57 @@ class ProductInfoView: UIView {
         bookCondition.text = inputBookData.condition
         
         //get seller name and email
-        var retrievedUserInfo: userInfoResponseDataStruct!
-        
         NetworkManager.getUserInfo(currentUserId: inputBookData.sellerId){ [self] responseData in
-            retrievedUserInfo = responseData
-            self.sellerEmail.text = retrievedUserInfo.email
-            self.sellerName.text = retrievedUserInfo.name        }
+            self.sellerEmail.text = responseData.email
+            self.sellerName.text = responseData.name
+            self.seller = UserInfo(id: responseData.id, email: responseData.email, name: responseData.name)
+            
+        }
         
         let userID :Int = LoginViewController.currentUser.id
         NetworkManager.getUserInfo(currentUserId: userID){ responseData in
-            if responseData.cart.contains(inputBookData){
-                self.addButton.setTitle("Remove from Cart", for: .normal)
-            }
-            else{
-                self.addButton.setTitle("Add to Cart", for: .normal)
-            }
+            //MARK: Keep for cart feature
+//            if responseData.cart.contains(inputBookData){
+//                self.addButton.setTitle("Remove from Cart", for: .normal)
+//            }
+//            else{
+//                self.addButton.setTitle("Add to Cart", for: .normal)
+//            }
+            self.buyer = UserInfo(id: responseData.id, email: responseData.email, name: responseData.name)
         }
         
         bookID = inputBookData.id
+        book = inputBookData
     }
     
-    @objc func addButtonTapped()
-    {
-        let userID :Int = LoginViewController.currentUser.id
-        let postStruct = addCartStruct(bookId: bookID)
-        let updateToken:String = LoginViewController.currentUser.update_token
-        
-        if addButton.titleLabel?.text == "Add to Cart"{
-            //add to cart
-            NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
-                books in
-                let alert = UIAlertController(title: "Success", message: "added to cart!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-                self.addButton.setTitle("Remove from Cart", for: .normal)
-            }
-        }
-        else{
-            //remove from cart
-            NetworkManager.deleteOneBookFromCart(currentUserId: userID, bookId: bookID,updateToken: updateToken){ books in //returned cart is not used
-                let alert = UIAlertController(title: "Success", message: "removed from cart!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-                self.addButton.setTitle("Add to Cart", for: .normal)
-            }
-        }
+    //    @objc func addButtonTapped()
+    //    {
+    //MARK: Keep for cart feature
+    //        let userID :Int = LoginViewController.currentUser.id
+    //        let postStruct = addCartStruct(bookId: bookID)
+    //        let updateToken:String = LoginViewController.currentUser.update_token
+    //
+    //
+    //        if addButton.titleLabel?.text == "Add to Cart"{
+    //            //add to cart
+    //            NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
+    //                books in
+    //                let alert = UIAlertController(title: "Success", message: "added to cart!", preferredStyle: .alert)
+    //                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+    //                self.addButton.setTitle("Remove from Cart", for: .normal)
+    //            }
+    //        }
+    //        else{
+    //            //remove from cart
+    //            NetworkManager.deleteOneBookFromCart(currentUserId: userID, bookId: bookID,updateToken: updateToken){ books in //returned cart is not used
+    //                let alert = UIAlertController(title: "Success", message: "removed from cart!", preferredStyle: .alert)
+    //                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+    //                self.addButton.setTitle("Add to Cart", for: .normal)
+    //            }
+    //        }
+    //    }
+    
+    @objc func addButtonTapped(){
+        chatDelegate?.showChat(inputBook: book, buyer: buyer, seller: seller)
     }
 }

@@ -158,3 +158,9 @@ struct accountDetails: Codable {
 struct accountError: Codable {
     var error: String
 }
+
+struct UserInfo {
+    var id: Int
+    var email: String
+    var name: String
+}

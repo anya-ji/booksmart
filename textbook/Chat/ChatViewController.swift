@@ -11,9 +11,10 @@ import InputBarAccessoryView
 
 class ChatViewController: MessagesViewController {
     
-    let currentUser = Sender(senderId: "self", displayName: "Me")
-    let otherUser = Sender(senderId: "other", displayName: "Other")
+    var currentUser: Sender!
+    var otherUser: Sender!
     var messages: [MessageType] = []
+    var book: Book!
     
     struct Sender: SenderType {
         var senderId: String
@@ -27,12 +28,25 @@ class ChatViewController: MessagesViewController {
         var kind: MessageKind
     }
     
+    init(currentUser: UserInfo, otherUser: UserInfo, book: Book){
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = Sender(senderId: currentUser.email, displayName: currentUser.name)
+        self.otherUser = Sender(senderId: otherUser.email, displayName: otherUser.name)
+        self.book = book
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        
+        self.title = otherUser.displayName
         
         //TODO: fake data, remove later
         messages.append(Message(sender: currentUser, messageId: "1", sentDate: Date().addingTimeInterval(-7000), kind: .text("Hi there!")))
@@ -118,7 +132,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         button.tintColor = .systemBlue
         
         button.onTouchUpInside {
-            print("Item Tapped")
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             actionSheet.addAction(action)

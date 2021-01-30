@@ -68,9 +68,9 @@ extension ChatManagerViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let newViewController = ChatViewController()
-        //TODO: set title name to the other user's name
-        newViewController.title = chats[indexPath.item]
-        navigationController?.pushViewController(newViewController, animated: true)
+//        let newViewController = ChatViewController()
+//        //TODO: set title name to the other user's name
+//        newViewController.title = chats[indexPath.item]
+//        navigationController?.pushViewController(newViewController, animated: true)
     }
 }

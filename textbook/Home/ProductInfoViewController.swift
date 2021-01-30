@@ -11,15 +11,16 @@ import UIKit
 
 
 class ProductInfoViewController: UIViewController {
-
+    
     private let productInfoView = ProductInfoView()
-
+    
     init(inputBook:Book){
         super.init(nibName: nil, bundle: nil)
         
         productInfoView.configure(inputBookData: inputBook)
-
+        productInfoView.chatDelegate = self
         view = productInfoView
+        
         
     }
     
@@ -27,5 +28,14 @@ class ProductInfoViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+}
 
+extension ProductInfoViewController: ShowChatProtocol{
+    func showChat(inputBook: Book, buyer: UserInfo, seller: UserInfo) {
+        let vc = ChatViewController(currentUser: buyer, otherUser: seller, book: inputBook)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
 }
