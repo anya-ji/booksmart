@@ -17,6 +17,8 @@
 		412850AB2571A92D00B319C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 412850A92571A92D00B319C1 /* LaunchScreen.storyboard */; };
 		414FE95125BEDC9200AE9F38 /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414FE95025BEDC9200AE9F38 /* InputBar.swift */; };
 		419AFF6C25C5C6D3004CC79D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419AFF6B25C5C6D3004CC79D /* UIColorExtension.swift */; };
+		41DFEF3025C6EB8B00AFE4E2 /* ChatNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DFEF2F25C6EB8B00AFE4E2 /* ChatNetworkManager.swift */; };
+		41DFEF3225C6EEF600AFE4E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41DFEF3125C6EEF600AFE4E2 /* GoogleService-Info.plist */; };
 		6C812DB02571E0DD0066EE78 /* bookData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812DAF2571E0DD0066EE78 /* bookData.swift */; };
 		6C812DB32571E31A0066EE78 /* HomeScreenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812DB22571E31A0066EE78 /* HomeScreenCollectionViewCell.swift */; };
 		6C812DB825720D0E0066EE78 /* HomeScreenCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812DB725720D0E0066EE78 /* HomeScreenCollectionView.swift */; };
@@ -44,7 +46,7 @@
 		184D376E486004CF5D03A5AE /* Pods-textbook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-textbook.debug.xcconfig"; path = "Target Support Files/Pods-textbook/Pods-textbook.debug.xcconfig"; sourceTree = "<group>"; };
 		4102F65525A492D400DE7C8A /* ConfirmSellSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSellSuccessViewController.swift; sourceTree = "<group>"; };
 		4102F65925A495AD00DE7C8A /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
-		4128509B2571A92A00B319C1 /* textbook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = textbook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4128509B2571A92A00B319C1 /* booksmart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = booksmart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4128509E2571A92A00B319C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		412850A02571A92A00B319C1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		412850A22571A92A00B319C1 /* HomeScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenController.swift; sourceTree = "<group>"; };
@@ -53,6 +55,8 @@
 		412850AC2571A92D00B319C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		414FE95025BEDC9200AE9F38 /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
 		419AFF6B25C5C6D3004CC79D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		41DFEF2F25C6EB8B00AFE4E2 /* ChatNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworkManager.swift; sourceTree = "<group>"; };
+		41DFEF3125C6EEF600AFE4E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6956E4586860B10D4FAD5AB0 /* Pods-textbook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-textbook.release.xcconfig"; path = "Target Support Files/Pods-textbook/Pods-textbook.release.xcconfig"; sourceTree = "<group>"; };
 		6C812DAF2571E0DD0066EE78 /* bookData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bookData.swift; sourceTree = "<group>"; };
 		6C812DB22571E31A0066EE78 /* HomeScreenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -103,7 +107,7 @@
 		4128509C2571A92A00B319C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4128509B2571A92A00B319C1 /* textbook.app */,
+				4128509B2571A92A00B319C1 /* booksmart.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,6 +119,9 @@
 				4128509E2571A92A00B319C1 /* AppDelegate.swift */,
 				412850A02571A92A00B319C1 /* SceneDelegate.swift */,
 				6C812DBF2574077D0066EE78 /* TabBarController.swift */,
+				412850A92571A92D00B319C1 /* LaunchScreen.storyboard */,
+				412850AC2571A92D00B319C1 /* Info.plist */,
+				41DFEF3125C6EEF600AFE4E2 /* GoogleService-Info.plist */,
 				414FE94A25BC78F100AE9F38 /* Home */,
 				414FE94B25BC790D00AE9F38 /* Cart */,
 				414FE94C25BC792700AE9F38 /* Add */,
@@ -122,8 +129,6 @@
 				414FE94925BC78DF00AE9F38 /* Chat */,
 				414FE94F25BC799D00AE9F38 /* Profile */,
 				414FE94E25BC797F00AE9F38 /* Util */,
-				412850A92571A92D00B319C1 /* LaunchScreen.storyboard */,
-				412850AC2571A92D00B319C1 /* Info.plist */,
 			);
 			path = textbook;
 			sourceTree = "<group>";
@@ -190,6 +195,7 @@
 				6C812DAF2571E0DD0066EE78 /* bookData.swift */,
 				6C812DC92574152D0066EE78 /* Util.swift */,
 				419AFF6B25C5C6D3004CC79D /* UIColorExtension.swift */,
+				41DFEF2F25C6EB8B00AFE4E2 /* ChatNetworkManager.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -238,7 +244,7 @@
 			);
 			name = textbook;
 			productName = textbook;
-			productReference = 4128509B2571A92A00B319C1 /* textbook.app */;
+			productReference = 4128509B2571A92A00B319C1 /* booksmart.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -281,6 +287,7 @@
 			files = (
 				412850AB2571A92D00B319C1 /* LaunchScreen.storyboard in Resources */,
 				412850A82571A92D00B319C1 /* Assets.xcassets in Resources */,
+				41DFEF3225C6EEF600AFE4E2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +364,7 @@
 				6C812DCA2574152D0066EE78 /* Util.swift in Sources */,
 				6C812DB02571E0DD0066EE78 /* bookData.swift in Sources */,
 				E82779B125856CD900EE187C /* ProfileViewController.swift in Sources */,
+				41DFEF3025C6EB8B00AFE4E2 /* ChatNetworkManager.swift in Sources */,
 				4102F65A25A495AD00DE7C8A /* ChatViewController.swift in Sources */,
 				6C812E9725846D6F0066EE78 /* SuccessViewController.swift in Sources */,
 				412850A12571A92A00B319C1 /* SceneDelegate.swift in Sources */,
@@ -504,8 +512,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.anyaji.textbook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.anyaji.booksmart;
+				PRODUCT_NAME = booksmart;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -523,8 +531,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.anyaji.textbook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.anyaji.booksmart;
+				PRODUCT_NAME = booksmart;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

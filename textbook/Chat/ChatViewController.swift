@@ -72,7 +72,6 @@ class ChatViewController: MessagesViewController {
         
         let items = [
             makeButton()
-            
         ]
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
@@ -127,7 +126,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         let button = InputBarButtonItem()
         
         button.setSize(CGSize(width: 36, height: 36), animated: false)
-        button.setImage(UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(UIImage(systemName: "calendar.badge.plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = .systemBlue
         

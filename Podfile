@@ -11,4 +11,5 @@ target 'textbook' do
   pod 'SDWebImage'
   pod 'MessageKit'
   pod 'InputBarAccessoryView'
+  pod 'Firebase/Firestore'
 end

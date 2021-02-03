@@ -17,45 +17,37 @@ class TabBarController: UITabBarController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        
         
         let appearance = UITabBarItem.appearance()
         let attributes: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key(rawValue: NSAttributedString.Key.font.rawValue):UIFont(name: "American Typewriter", size: 12)!]
         appearance.setTitleTextAttributes(attributes, for: .normal)
         
         //homescreen
-        let newHomeIconImage = Util.resizeImage(image: UIImage(named: "home_icon")!, targetSize: CGSize(width: 28, height: 28))
-        let home = generateNavController(vc: HomeScreenController(), barTitle: "Home", pageTitle: "Home", image: newHomeIconImage)
+        let home = generateNavController(vc: HomeScreenController(), barTitle: "Home", pageTitle: "Home", image: UIImage(systemName: "house")!)
         
         //sell new book
-        let newAddIcon = Util.resizeImage(image: UIImage(named: "add_icon")!, targetSize: CGSize(width: 28, height: 28))
-        let addNewBook = generateNavController(vc: AddNewBook(), barTitle: "Sell", pageTitle: "Sell A New Book", image: newAddIcon)
+        let addNewBook = generateNavController(vc: AddNewBook(), barTitle: "Sell", pageTitle: "Sell A New Book", image: UIImage(systemName: "plus.circle")!)
         
         //cart
-        let newCartIcon = Util.resizeImage(image: UIImage(named: "cart_icon")!, targetSize: CGSize(width: 28, height: 28))
-        let cart = generateNavController(vc: CartViewController(), barTitle: "Cart", pageTitle: "My Shopping Cart", image: newCartIcon)
+        let cart = generateNavController(vc: CartViewController(), barTitle: "Saved", pageTitle: "Saved Listings", image: UIImage(systemName: "bookmark")!)
         
         //default profile
-        let newProfileIcon = Util.resizeImage(image: UIImage(named: "profile_icon")!, targetSize: CGSize(width: 28, height: 28))
-        let profile = generateNavController(vc: ProfileViewController(), barTitle: "Profile", pageTitle: "", image: newProfileIcon)
+        let profile = generateNavController(vc: ProfileViewController(), barTitle: "Profile", pageTitle: "", image: UIImage(systemName: "person.fill")!)
         
         //chat
-        let newChatIcon = Util.resizeImage(image: UIImage(named: "chat_icon")!, targetSize: CGSize(width: 28, height: 28))
-        let chat = generateNavController(vc: ChatManagerViewController(), barTitle: "Chat", pageTitle: "Chats", image: newChatIcon)
+        let chat = generateNavController(vc: ChatManagerViewController(), barTitle: "Chat", pageTitle: "Chats", image: UIImage(systemName: "envelope")!)
         
         viewControllers = [home,chat,addNewBook,cart,profile]
-
+        
     }
     
     func generateNavController(vc:UIViewController,barTitle:String,pageTitle: String,image:UIImage)->UINavigationController{
@@ -67,5 +59,5 @@ class TabBarController: UITabBarController {
         
         return navController
     }
-
+    
 }

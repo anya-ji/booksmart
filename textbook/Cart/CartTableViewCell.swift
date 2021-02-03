@@ -59,7 +59,7 @@ class CartTableViewCell: UITableViewCell {
         
         //delete button
 //        deleteButton = UIImageView()
-//        deleteButton.image = UIImage(named: "delete_icon")
+//        deleteButton.image = UIImage(systemName: "xmark")
 //        deleteButton.translatesAutoresizingMaskIntoConstraints = false
 //        deleteButton.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
 //        contentView.addSubview(deleteButton)
@@ -68,7 +68,7 @@ class CartTableViewCell: UITableViewCell {
 //        deleteButton.addGestureRecognizer(tapDeleteGesture)
         
         deleteButton = UIButton()
-        deleteButton.setImage(UIImage(named: "delete_icon"), for: .normal)
+        deleteButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         deleteButton.addTarget(self, action: #selector(tappingDelete), for: .touchUpInside)
