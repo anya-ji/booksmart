@@ -104,6 +104,7 @@ class PreLoginViewController: UIViewController {
         
         let height: CGFloat = view.frame.height
         let width: CGFloat = view.frame.width
+        let padding: CGFloat = width/15
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: width/10),
@@ -123,24 +124,24 @@ class PreLoginViewController: UIViewController {
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             registerButton.widthAnchor.constraint(equalToConstant: width*0.88),
             registerButton.heightAnchor.constraint(equalToConstant: height*0.0625),
-            registerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: height*0.7)
+            registerButton.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -padding)
         ])
         
         NSLayoutConstraint.activate([
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.widthAnchor.constraint(equalToConstant: width*0.88),
             loginButton.heightAnchor.constraint(equalToConstant: height*0.0625),
-            loginButton.topAnchor.constraint(equalTo: registerButton.bottomAnchor, constant: height*0.03)
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -height*0.03)
         ])
 
     }
     
     @objc func registerButtonTapped() {
-        
+        self.navigationController?.pushViewController(RegisterViewController(), animated: true)
     }
     
     @objc func loginButtonTapped () {
-        
+        self.navigationController?.pushViewController(LoginViewController(), animated: true)
     }
 
 }

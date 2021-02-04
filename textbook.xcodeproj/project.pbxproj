@@ -187,8 +187,8 @@
 		414FE94D25BC793D00AE9F38 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E8A4978F257B4A2800F13FF6 /* LoginViewController.swift */,
 				E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */,
+				E8A4978F257B4A2800F13FF6 /* LoginViewController.swift */,
 				E8CD79B825CB797400370BB9 /* RegisterViewController.swift */,
 			);
 			path = Login;
