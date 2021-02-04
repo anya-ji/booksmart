@@ -22,15 +22,17 @@ class PreLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = true
+        
         view.backgroundColor = .white
         
         setupViews()
         setupConstraints()
-        //setupBackground()
+        setupBackground()
     }
     
     func setupBackground() {
-        let background = UIImage(named: "yellow_background")
+        let background = UIImage(named: "home_background")
         var imageView: UIImageView!
         imageView = UIImageView(frame: view.bounds)
         imageView.image = background
@@ -141,7 +143,7 @@ class PreLoginViewController: UIViewController {
     }
     
     @objc func loginButtonTapped () {
-        self.navigationController?.pushViewController(LoginViewController(), animated: true)
+        self.navigationController?.pushViewController(NewLoginViewController(), animated: true)
     }
 
 }

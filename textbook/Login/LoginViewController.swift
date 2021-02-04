@@ -81,7 +81,7 @@ class LoginViewController: UIViewController {
         loginTitle.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginTitle)
         
-        // User Input (everything backend needs is here)
+        // User Input 
         
         registerFName = UITextField()
         let registerFNamePlaceHolder=NSAttributedString(string: "First Name", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
@@ -513,8 +513,6 @@ class LoginViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
             canLogIn = false
         }
-        
-        
         
         let email = userInputEmail
         let password = userInputPassword

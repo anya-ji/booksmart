@@ -13,6 +13,7 @@ class RegisterViewController: UIViewController {
     let gray: UIColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
     let aqua: UIColor = UIColor(red: 0.168, green: 0.543, blue: 0.567, alpha: 1)
     let pink: UIColor = UIColor(red: 1, green: 0.479, blue: 0.479, alpha: 1)
+    let white: UIColor = UIColor(red: 0.979, green: 0.979, blue: 0.979, alpha: 1)
     
     var startLabel: UILabel!
     var registerFName: UITextField!
@@ -23,11 +24,26 @@ class RegisterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
+        
+        navigationController?.navigationBar.isHidden = false
+        
+        setupToHideKeyboardOnTapOnView()
         
         setupViews()
         setupConstraints()
+        setupBackground()
+    }
+    
+    func setupBackground() {
+        let background = UIImage(named: "register_1")
+        var imageView: UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.image = background
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.center = view.center
+        view.addSubview(imageView)
+        self.view.sendSubviewToBack(imageView)
     }
     
     func setupViews() {
@@ -44,7 +60,7 @@ class RegisterViewController: UIViewController {
         let registerFNamePlaceHolder=NSAttributedString(string: "First Name", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         registerFName.textColor = gray
         registerFName.attributedPlaceholder = registerFNamePlaceHolder
-        registerFName.layer.backgroundColor = UIColor.white.cgColor
+        registerFName.layer.backgroundColor = white.cgColor
         registerFName.layer.borderColor = gray.cgColor
         registerFName.layer.borderWidth = 0.0
         registerFName.layer.shadowOffset = CGSize(width: 0, height: 1.0)
@@ -58,7 +74,7 @@ class RegisterViewController: UIViewController {
         let registerLNamePlaceHolder=NSAttributedString(string: "Last Name", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         registerLName.textColor = gray
         registerLName.attributedPlaceholder = registerLNamePlaceHolder
-        registerLName.layer.backgroundColor = UIColor.white.cgColor
+        registerLName.layer.backgroundColor = white.cgColor
         registerLName.layer.borderColor = gray.cgColor
         registerLName.layer.borderWidth = 0.0
         registerLName.layer.shadowOffset = CGSize(width: 0, height: 1.0)
@@ -72,7 +88,7 @@ class RegisterViewController: UIViewController {
         let registerEmailPlaceHolder=NSAttributedString(string: "Student Email", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         registerEmail.textColor = gray
         registerEmail.attributedPlaceholder = registerEmailPlaceHolder
-        registerEmail.layer.backgroundColor = UIColor.white.cgColor
+        registerEmail.layer.backgroundColor = white.cgColor
         registerEmail.layer.borderColor = gray.cgColor
         registerEmail.layer.borderWidth = 0.0
         registerEmail.layer.shadowOffset = CGSize(width: 0, height: 1.0)
@@ -87,7 +103,7 @@ class RegisterViewController: UIViewController {
         let registerPasswordPlaceHolder=NSAttributedString(string: "Password", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
         registerPassword.textColor = gray
         registerPassword.attributedPlaceholder = registerPasswordPlaceHolder
-        registerPassword.layer.backgroundColor = UIColor.white.cgColor
+        registerPassword.layer.backgroundColor = white.cgColor
         registerPassword.layer.borderColor = gray.cgColor
         registerPassword.layer.borderWidth = 0.0
         registerPassword.layer.shadowOffset = CGSize(width: 0, height: 1.0)
@@ -166,65 +182,7 @@ class RegisterViewController: UIViewController {
     }
     
     @objc func nextButtonTapped() {
-        
-        var canRegister = true
-        
-        var userInputEmail = ""
-        if let email = registerEmail.text{
-            userInputEmail = email
-        }
-        if (userInputEmail == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide an email address", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canRegister = false
-        }
-        
-        var userInputFName = ""
-        if let firstName = registerFName.text{
-            userInputFName = firstName
-        }
-        if (userInputFName == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide a first name", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canRegister = false
-        }
-        
-        var userInputLName = ""
-        if let lastName = registerLName.text{
-            userInputLName = lastName
-        }
-        if (userInputLName == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide a last name", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canRegister = false
-        }
-        
-        var userInputPassword = ""
-        if let password = registerPassword.text{
-            userInputPassword  = password
-        }
-        if (userInputPassword == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please set a password", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canRegister = false
-        }
-        
-        
-        let email = userInputEmail
-        let name = userInputFName + " " + userInputLName
-        let password = userInputPassword
-        
-        if canRegister {
-            NetworkManager.registerUser(email: email, name: name, password: password, completion: { (accountDetails) in
-                LoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
-            }) { (errorMessage) in
-                self.createAlert(message: errorMessage)
-            }
-        }
+        // TODO: push next registration screen
     }
     
     func createAlert(message: String) {
@@ -234,5 +192,16 @@ class RegisterViewController: UIViewController {
         }))
         present(alert, animated: true, completion: nil)
     }
-
+    
+    //they are used when we want to dismiss the keyboard when tap outside of UITextField
+    func setupToHideKeyboardOnTapOnView() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+          target: self,
+          action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
