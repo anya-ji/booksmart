@@ -40,6 +40,8 @@
 		E82779AF2584608500EE187C /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82779AE2584608500EE187C /* SearchTableViewCell.swift */; };
 		E82779B125856CD900EE187C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82779B025856CD900EE187C /* ProfileViewController.swift */; };
 		E8A49790257B4A2800F13FF6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4978F257B4A2800F13FF6 /* LoginViewController.swift */; };
+		E8CD79B625CB687F00370BB9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */; };
+		E8CD79B925CB797400370BB9 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79B825CB797400370BB9 /* RegisterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,8 @@
 		E82779AE2584608500EE187C /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		E82779B025856CD900EE187C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E8A4978F257B4A2800F13FF6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
+		E8CD79B825CB797400370BB9 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				E8A4978F257B4A2800F13FF6 /* LoginViewController.swift */,
+				E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */,
+				E8CD79B825CB797400370BB9 /* RegisterViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -361,9 +367,11 @@
 				6C812DB32571E31A0066EE78 /* HomeScreenCollectionViewCell.swift in Sources */,
 				6C812DBB25720F330066EE78 /* HomeScreenTableCell.swift in Sources */,
 				E8A49790257B4A2800F13FF6 /* LoginViewController.swift in Sources */,
+				E8CD79B925CB797400370BB9 /* RegisterViewController.swift in Sources */,
 				6C812DCA2574152D0066EE78 /* Util.swift in Sources */,
 				6C812DB02571E0DD0066EE78 /* bookData.swift in Sources */,
 				E82779B125856CD900EE187C /* ProfileViewController.swift in Sources */,
+				E8CD79B625CB687F00370BB9 /* PreLoginViewController.swift in Sources */,
 				41DFEF3025C6EB8B00AFE4E2 /* ChatNetworkManager.swift in Sources */,
 				4102F65A25A495AD00DE7C8A /* ChatViewController.swift in Sources */,
 				6C812E9725846D6F0066EE78 /* SuccessViewController.swift in Sources */,
