@@ -43,6 +43,7 @@
 		E8CD79B625CB687F00370BB9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */; };
 		E8CD79B925CB797400370BB9 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79B825CB797400370BB9 /* RegisterViewController.swift */; };
 		E8CD79BD25CB8E4A00370BB9 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79BC25CB8E4A00370BB9 /* NewLoginViewController.swift */; };
+		E8CD79C325CCC11F00370BB9 /* SceduleMeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD79C225CCC11F00370BB9 /* SceduleMeetingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		E8CD79B525CB687F00370BB9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
 		E8CD79B825CB797400370BB9 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		E8CD79BC25CB8E4A00370BB9 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
+		E8CD79C225CCC11F00370BB9 /* SceduleMeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceduleMeetingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				414FE95025BEDC9200AE9F38 /* InputBar.swift */,
 				E8177CD7259D681E0066ED45 /* ChatManagerViewController.swift */,
 				E8177CD9259D6BB70066ED45 /* ChatManagerTableViewCell.swift */,
+				E8CD79C225CCC11F00370BB9 /* SceduleMeetingViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				414FE95125BEDC9200AE9F38 /* InputBar.swift in Sources */,
 				6C812DB32571E31A0066EE78 /* HomeScreenCollectionViewCell.swift in Sources */,
 				6C812DBB25720F330066EE78 /* HomeScreenTableCell.swift in Sources */,
+				E8CD79C325CCC11F00370BB9 /* SceduleMeetingViewController.swift in Sources */,
 				E8A49790257B4A2800F13FF6 /* LoginViewController.swift in Sources */,
 				E8CD79B925CB797400370BB9 /* RegisterViewController.swift in Sources */,
 				6C812DCA2574152D0066EE78 /* Util.swift in Sources */,

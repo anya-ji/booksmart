@@ -12,4 +12,6 @@ target 'textbook' do
   pod 'MessageKit'
   pod 'InputBarAccessoryView'
   pod 'Firebase/Firestore'
+  pod 'DropDown'
+
 end
