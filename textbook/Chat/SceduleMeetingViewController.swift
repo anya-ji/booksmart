@@ -12,19 +12,27 @@ class SceduleMeetingViewController: UIViewController {
     
     let gray: UIColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
     let pink: UIColor = UIColor(red: 1, green: 0.479, blue: 0.479, alpha: 1)
+    let lightGray: UIColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1)
     
     var backgroundView: UIView!
     var bookTitle: UITextField!
     var bookPrice: UITextField!
     var whenLabel: UILabel!
-    var whenTextField: UITextField!
+    var dateTextField: UITextField!
+    var hourTextField: UITextField!
     var whereLabel: UILabel!
+    var wherePicker: UIPickerView!
+    var otherTextField: UITextField!
     var paymentLabel: UILabel!
     var paymentTextfield: UITextField!
     var createButton: UIButton!
+    var locations:[String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // add in locations here later
+        locations = ["place 1", "place 2", "place 3", "place 4", "place 5", "other"]
 
         view.backgroundColor = .white
         
@@ -74,7 +82,7 @@ class SceduleMeetingViewController: UIViewController {
         bookPrice.translatesAutoresizingMaskIntoConstraints = false
         bookPrice.autocorrectionType = .no
         view.addSubview(bookPrice)
-        
+                
         whenLabel = UILabel()
         whenLabel.text = "When"
         whenLabel.textColor = .black
@@ -83,8 +91,26 @@ class SceduleMeetingViewController: UIViewController {
         whenLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(whenLabel)
         
-        // whenPicker
-        
+        dateTextField = UITextField()
+        dateTextField.textAlignment = .center
+        let dateTextFieldPlaceHolder=NSAttributedString(string: "(MM/YY)", attributes:[NSAttributedString.Key.foregroundColor :UIColor.black])
+        dateTextField.textColor = UIColor.black
+        dateTextField.attributedPlaceholder = dateTextFieldPlaceHolder
+        dateTextField.layer.backgroundColor = lightGray.cgColor
+        dateTextField.translatesAutoresizingMaskIntoConstraints = false
+        dateTextField.autocorrectionType = .no
+        view.addSubview(dateTextField)
+                
+        hourTextField = UITextField()
+        hourTextField.textAlignment = .center
+        let hourTextFieldPlaceHolder=NSAttributedString(string: "(HH:MM am/pm)", attributes:[NSAttributedString.Key.foregroundColor :UIColor.black])
+        hourTextField.textColor = UIColor.black
+        hourTextField.attributedPlaceholder = hourTextFieldPlaceHolder
+        hourTextField.layer.backgroundColor = lightGray.cgColor
+        hourTextField.translatesAutoresizingMaskIntoConstraints = false
+        hourTextField.autocorrectionType = .no
+        view.addSubview(hourTextField)
+                
         whereLabel = UILabel()
         whereLabel.text = "Where"
         whereLabel.textColor = .black
@@ -92,17 +118,29 @@ class SceduleMeetingViewController: UIViewController {
         whereLabel.isUserInteractionEnabled = false
         whereLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(whereLabel)
+                
+        wherePicker = UIPickerView()
+        wherePicker.translatesAutoresizingMaskIntoConstraints = false
+        wherePicker.delegate = self
+        wherePicker.dataSource = self
+        view.addSubview(wherePicker)
         
-        // wherePicker
-        
-        whereLabel = UILabel()
-        whereLabel.text = "Where"
-        whereLabel.textColor = .black
-        whereLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        whereLabel.isUserInteractionEnabled = false
-        whereLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(whereLabel)
-        
+        otherTextField = UITextField()
+        let otherTextFieldPlaceHolder=NSAttributedString(string: "Enter Other Location Here", attributes:[NSAttributedString.Key.foregroundColor :UIColor.darkGray])
+        otherTextField.textColor = gray
+        otherTextField.attributedPlaceholder = otherTextFieldPlaceHolder
+        otherTextField.layer.backgroundColor = UIColor.white.cgColor
+        otherTextField.layer.borderColor = gray.cgColor
+        otherTextField.layer.borderWidth = 0.0
+        otherTextField.layer.shadowOffset = CGSize(width: 0, height: 1.0)
+        otherTextField.layer.shadowOpacity = 1.0
+        otherTextField.layer.shadowRadius = 0.0
+        otherTextField.isHidden = true
+        otherTextField.isUserInteractionEnabled = false
+        otherTextField.translatesAutoresizingMaskIntoConstraints = false
+        otherTextField.autocorrectionType = .no
+        view.addSubview(otherTextField)
+                
         paymentLabel = UILabel()
         paymentLabel.text = "Payment Method"
         paymentLabel.textColor = .black
@@ -110,6 +148,7 @@ class SceduleMeetingViewController: UIViewController {
         paymentLabel.isUserInteractionEnabled = false
         paymentLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(paymentLabel)
+                
         
         createButton = UIButton()
         createButton.layer.cornerRadius = 20
@@ -132,9 +171,65 @@ class SceduleMeetingViewController: UIViewController {
     
     func setupConstraints() {
         
-        let height: CGFloat = view.frame.height
         let width: CGFloat = view.frame.width
-        let padding: CGFloat = width/10
+        let height: CGFloat = view.frame.height
+        let padding: CGFloat = view.frame.width*0.06
+        
+        NSLayoutConstraint.activate([
+            bookTitle.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: padding),
+            bookTitle.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -padding),
+            bookTitle.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: padding)
+        ])
+                
+        NSLayoutConstraint.activate([
+            bookPrice.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            bookPrice.trailingAnchor.constraint(equalTo: view.centerXAnchor),
+            bookPrice.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: padding*1.5)
+        ])
+                
+        NSLayoutConstraint.activate([
+            whenLabel.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            whenLabel.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            whenLabel.topAnchor.constraint(equalTo: bookPrice.bottomAnchor, constant: padding*1.25)
+        ])
+        
+        NSLayoutConstraint.activate([
+            dateTextField.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            dateTextField.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -padding/2),
+            dateTextField.topAnchor.constraint(equalTo: whenLabel.bottomAnchor, constant: padding/4),
+            dateTextField.heightAnchor.constraint(equalToConstant: height*0.05)
+        ])
+                
+        NSLayoutConstraint.activate([
+            hourTextField.leadingAnchor.constraint(equalTo: backgroundView.centerXAnchor, constant: padding/2),
+            hourTextField.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            hourTextField.topAnchor.constraint(equalTo: dateTextField.topAnchor),
+            hourTextField.heightAnchor.constraint(equalTo: dateTextField.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            whereLabel.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            whereLabel.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            whereLabel.topAnchor.constraint(equalTo: dateTextField.bottomAnchor, constant: padding*1.25)
+        ])
+        
+        NSLayoutConstraint.activate([
+            wherePicker.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            wherePicker.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            wherePicker.bottomAnchor.constraint(equalTo: whereLabel.bottomAnchor, constant: height*0.15)
+        ])
+        
+        NSLayoutConstraint.activate([
+            otherTextField.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            otherTextField.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            otherTextField.bottomAnchor.constraint(equalTo: paymentLabel.topAnchor, constant: -padding)
+        ])
+        
+        NSLayoutConstraint.activate([
+            paymentLabel.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            paymentLabel.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            paymentLabel.topAnchor.constraint(equalTo: wherePicker.bottomAnchor, constant: padding/8)
+        ])
         
         NSLayoutConstraint.activate([
             createButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -142,10 +237,40 @@ class SceduleMeetingViewController: UIViewController {
             createButton.heightAnchor.constraint(equalToConstant: height*0.0625),
             createButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -height*0.03)
         ])
+
     }
     
     @objc func createButtonTapped() {
         // TODO
     }
 
+}
+
+extension SceduleMeetingViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return locations.count
+    }
+    
+}
+
+extension SceduleMeetingViewController: UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return locations[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if row == locations.count - 1 {
+            otherTextField.isHidden = false
+            otherTextField.isUserInteractionEnabled = true
+        } else {
+            otherTextField.isHidden = true
+            otherTextField.isUserInteractionEnabled = false
+        }
+    }
+    
 }
