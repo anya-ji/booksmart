@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import DropDown
 
 class SceduleMeetingViewController: UIViewController {
+    
+    let dropdown: DropDown = {
+        let dropdown = DropDown()
+        dropdown.dataSource = ["Credit Card", "Paypal", "Venmo"]
+        return dropdown
+    }()
     
     let gray: UIColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1)
     let pink: UIColor = UIColor(red: 1, green: 0.479, blue: 0.479, alpha: 1)
@@ -36,6 +43,7 @@ class SceduleMeetingViewController: UIViewController {
 
         view.backgroundColor = .white
         
+        setupToHideKeyboardOnTapOnView()
         setupViews()
         setupConstraints()
     }
@@ -149,6 +157,24 @@ class SceduleMeetingViewController: UIViewController {
         paymentLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(paymentLabel)
                 
+        paymentTextfield = UITextField()
+        paymentTextfield.textAlignment = .center
+        let paymentTextfieldPlaceHolder=NSAttributedString(string: "Select Payment Type", attributes:[NSAttributedString.Key.foregroundColor :UIColor.black])
+        paymentTextfield.textColor = UIColor.black
+        paymentTextfield.attributedPlaceholder = paymentTextfieldPlaceHolder
+        paymentTextfield.layer.backgroundColor = lightGray.cgColor
+        paymentTextfield.translatesAutoresizingMaskIntoConstraints = false
+        paymentTextfield.autocorrectionType = .no
+        view.addSubview(paymentTextfield)
+        
+        dropdown.anchorView = paymentTextfield
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(paymentTapped))
+        gesture.numberOfTouchesRequired = 1
+        gesture.numberOfTapsRequired = 1
+        paymentTextfield.addGestureRecognizer(gesture)
+        dropdown.selectionAction = { index, title in
+            self.paymentTextfield.text = title
+        }
         
         createButton = UIButton()
         createButton.layer.cornerRadius = 20
@@ -232,6 +258,13 @@ class SceduleMeetingViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
+            paymentTextfield.leadingAnchor.constraint(equalTo: bookTitle.leadingAnchor),
+            paymentTextfield.trailingAnchor.constraint(equalTo: bookTitle.trailingAnchor),
+            paymentTextfield.topAnchor.constraint(equalTo: paymentLabel.bottomAnchor, constant: padding/4),
+            paymentTextfield.heightAnchor.constraint(equalToConstant: height*0.05)
+        ])
+        
+        NSLayoutConstraint.activate([
             createButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             createButton.widthAnchor.constraint(equalToConstant: width*0.88),
             createButton.heightAnchor.constraint(equalToConstant: height*0.0625),
@@ -242,6 +275,21 @@ class SceduleMeetingViewController: UIViewController {
     
     @objc func createButtonTapped() {
         // TODO
+    }
+    
+    @ objc func paymentTapped() {
+        dropdown.show()
+    }
+    
+    func setupToHideKeyboardOnTapOnView() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+          target: self,
+          action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
 }
