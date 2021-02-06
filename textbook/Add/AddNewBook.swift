@@ -8,7 +8,7 @@
 import UIKit
 
 class AddNewBook: UIViewController {
-
+    
     let pink: UIColor = UIColor(red: 1, green: 0.479, blue: 0.479, alpha: 1)
     
     var bookImage: UIImageView!
@@ -135,19 +135,19 @@ class AddNewBook: UIViewController {
         view.addSubview(bookConditionPicker)
         
         
-//        courseDescription = UITextView()
-//        courseDescription.layer.cornerRadius = 20
-//        courseDescription.clipsToBounds = true
-//        courseDescription.isEditable = true
-//        courseDescription.isScrollEnabled = false
-//        courseDescription.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-//        courseDescription.textColor = .darkGray
-//        courseDescription.font = .systemFont(ofSize: 18)
-//        courseDescription.text = courseDescriptionPlaceHolder
-//        courseDescription.translatesAutoresizingMaskIntoConstraints = false
-//        courseDescription.delegate = self
-//        courseDescription.returnKeyType = .done
-//        view.addSubview(courseDescription)
+        //        courseDescription = UITextView()
+        //        courseDescription.layer.cornerRadius = 20
+        //        courseDescription.clipsToBounds = true
+        //        courseDescription.isEditable = true
+        //        courseDescription.isScrollEnabled = false
+        //        courseDescription.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        //        courseDescription.textColor = .darkGray
+        //        courseDescription.font = .systemFont(ofSize: 18)
+        //        courseDescription.text = courseDescriptionPlaceHolder
+        //        courseDescription.translatesAutoresizingMaskIntoConstraints = false
+        //        courseDescription.delegate = self
+        //        courseDescription.returnKeyType = .done
+        //        view.addSubview(courseDescription)
         
         photosLabel = UILabel()
         photosLabel.text = "Submit Photos"
@@ -200,28 +200,28 @@ class AddNewBook: UIViewController {
             bookTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             bookTitle.heightAnchor.constraint(equalToConstant: 30),
         ])
-
+        
         NSLayoutConstraint.activate([
             bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 10),
             bookAuthor.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
             bookAuthor.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             bookAuthor.heightAnchor.constraint(equalToConstant: 30)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookEdition.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor, constant: 10),
             bookEdition.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
             bookEdition.widthAnchor.constraint(equalToConstant: (view.frame.width-sidePadding*2)/2),
             bookEdition.heightAnchor.constraint(equalToConstant: 30)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookPrice.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor, constant: 10),
             bookPrice.leadingAnchor.constraint(equalTo: bookEdition.trailingAnchor, constant: 5),
             bookPrice.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             bookPrice.heightAnchor.constraint(equalToConstant: 30)
         ])
-
+        
         NSLayoutConstraint.activate([
             bookISBN.topAnchor.constraint(equalTo: bookPrice.bottomAnchor, constant: 10),
             bookISBN.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
@@ -236,13 +236,13 @@ class AddNewBook: UIViewController {
             courseUsedFor.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             courseUsedFor.heightAnchor.constraint(equalToConstant: 30)
         ])
-
-//        NSLayoutConstraint.activate([
-//            courseDescription.topAnchor.constraint(equalTo: courseUsedFor.bottomAnchor, constant: 10),
-//            courseDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
-//            courseDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
-//            courseDescription.bottomAnchor.constraint(equalTo: photosLabel.topAnchor, constant: -20)
-//        ])
+        
+        //        NSLayoutConstraint.activate([
+        //            courseDescription.topAnchor.constraint(equalTo: courseUsedFor.bottomAnchor, constant: 10),
+        //            courseDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
+        //            courseDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
+        //            courseDescription.bottomAnchor.constraint(equalTo: photosLabel.topAnchor, constant: -20)
+        //        ])
         
         NSLayoutConstraint.activate([
             bookConditionPicker.topAnchor.constraint(equalTo: courseUsedFor.bottomAnchor, constant: 30),
@@ -250,14 +250,14 @@ class AddNewBook: UIViewController {
             bookConditionPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             bookConditionPicker.bottomAnchor.constraint(equalTo: photosLabel.topAnchor, constant: -30)
         ])
-
+        
         NSLayoutConstraint.activate([
             photosLabel.bottomAnchor.constraint(equalTo: photoPrompt.topAnchor, constant: -5),
             photosLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
             photosLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             photosLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
-
+        
         NSLayoutConstraint.activate([
             photoPrompt.bottomAnchor.constraint(equalTo: bookImage.topAnchor, constant: -20),
             photoPrompt.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
@@ -287,11 +287,11 @@ class AddNewBook: UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(dismissKeyboard))
-
+        
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
-
+    
     @objc func dismissKeyboard()
     {
         view.endEditing(true)
@@ -302,17 +302,17 @@ class AddNewBook: UIViewController {
         showChooseSourceTypeAlertController()
     }
     
-//    func uploadImage(){
-//        print("there is a fake book id")
-//        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
-//
-//        let imageData:NSData = bookImage.image!.pngData()! as NSData
-//        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-//
-//        let uploadImageData = uploadBookImage(imageData: imageStr, bookId: fakeBookID)
-//
-//        NetworkManager.postBookImage(newBookImage: uploadImageData)
-//    }
+    //    func uploadImage(){
+    //        print("there is a fake book id")
+    //        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
+    //
+    //        let imageData:NSData = bookImage.image!.pngData()! as NSData
+    //        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    //
+    //        let uploadImageData = uploadBookImage(imageData: imageStr, bookId: fakeBookID)
+    //
+    //        NetworkManager.postBookImage(newBookImage: uploadImageData)
+    //    }
     
     func uploadBook(){
         
@@ -386,7 +386,7 @@ class AddNewBook: UIViewController {
             self.present(alert, animated: true, completion: nil)
             canUpload = false
         }
-
+        
         
         var userInputISBN:String = ""
         if let isbn = bookISBN.text{
@@ -410,18 +410,16 @@ class AddNewBook: UIViewController {
             
             //uploading...
             let alert = UIAlertController(title: nil, message: "Uploading...", preferredStyle: .alert)
-
+            
             let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
             loadingIndicator.hidesWhenStopped = true
             loadingIndicator.style = UIActivityIndicatorView.Style.medium
             loadingIndicator.startAnimating()
-
+            
             alert.view.addSubview(loadingIndicator)
             present(alert, animated: true, completion: nil)
             
             NetworkManager.postBook(newBookData: uploadBook){ responseData in
-                
-                print("inside post book block")
                 
                 //dismiss loading indicator
                 self.dismiss(animated: false, completion: nil)
@@ -429,7 +427,7 @@ class AddNewBook: UIViewController {
                 let alert = UIAlertController(title: "Success", message: "Uploaded!", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
-//
+                //
                 //set the field back to default
                 self.bookTitle.text = ""
                 self.bookAuthor.text = ""
@@ -443,28 +441,15 @@ class AddNewBook: UIViewController {
                 self.navigationController?.pushViewController(newViewController, animated: true)
                 
             }
-            
-            
-            
         }
-        
     }
     
     @objc func confirmButtonTapped(){
-//        print("confirm button tapped. do something")
+        //        print("confirm button tapped. do something")
         uploadBook()
         //TabBarController().selectedIndex = 0
     }
-
-    /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
 
 extension AddNewBook:UIImagePickerControllerDelegate,UINavigationControllerDelegate{

@@ -137,7 +137,7 @@ class SavedViewController: UIViewController {
     
     private func retrieveUserCart(){ // need to update backend stuff
         
-        let sellerID :Int = NewLoginViewController.currentUser.id //this is correct now
+        let sellerID :Int = NetworkManager.currentUser.id //this is correct now
         
         var cartFromBackend : [Book] = []
         self.booksInSaved = []

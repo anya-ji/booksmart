@@ -13,6 +13,11 @@ protocol ShowChatProtocol: class {
     func showChat(inputBook:Book, buyer:UserInfo, seller: UserInfo)
 }
 
+protocol ShowLoadingProtocol: class {
+    func showLoading()
+    func dismissLoading()
+}
+
 class ProductInfoView: UIView {
     
     var bookTitle: UILabel!
@@ -20,7 +25,6 @@ class ProductInfoView: UIView {
     var bookEdition: UILabel!
     var bookISBN: UILabel!
     var saved: UIButton! // testing
-    var savedIcon: UIImage!
     var bookPrice: UILabel!
     var bookCondition: UILabel!
     var bookClass: UILabel!
@@ -37,7 +41,10 @@ class ProductInfoView: UIView {
     var seller: UserInfo!
     var buyer: UserInfo!
     
+    var isSaved: Bool! = false
+    
     weak var chatDelegate: ShowChatProtocol?
+    weak var loadingDelegate: ShowLoadingProtocol?
     
     init() {
         super.init(frame: CGRect.zero)
@@ -83,17 +90,7 @@ class ProductInfoView: UIView {
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookISBN)
         
-        savedIcon = UIImage(systemName: "bookmark")
-        
-        saved = UIButton() //(type: UIButton.ButtonType.custom) as UIButton?
-//        saved.clipsToBounds = true
-//        saved.contentMode = .scaleAspectFill
-        saved.setImage(savedIcon, for: .normal)
-//        saved.setTitle("+", for: .normal)
-//        saved.setTitleColor(.black, for: .normal)
-//        saved.titleLabel?.font = UIFont.systemFont(ofSize: 24)
-//        saved.backgroundColor = .white
-//        saved.layer.cornerRadius = 15
+        saved = UIButton()
         saved.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saved.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(saved)
@@ -299,15 +296,15 @@ class ProductInfoView: UIView {
             
         }
         
-        let userID :Int = NewLoginViewController.currentUser.id
+        let userID :Int = NetworkManager.currentUser.id
         NetworkManager.getUserInfo(currentUserId: userID){ responseData in
-            //MARK: Keep for cart feature
-//            if responseData.cart.contains(inputBookData){
-//                self.addButton.setTitle("Remove from Cart", for: .normal)
-//            }
-//            else{
-//                self.addButton.setTitle("Add to Cart", for: .normal)
-//            }
+            
+            if responseData.cart.contains(inputBookData){
+                self.saved.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+            }
+            else{
+                self.saved.setImage(UIImage(systemName: "bookmark"), for: .normal)
+            }
             self.buyer = UserInfo(id: responseData.id, email: responseData.email, name: responseData.name)
         }
         
@@ -345,28 +342,26 @@ class ProductInfoView: UIView {
     @objc func addButtonTapped(){
         chatDelegate?.showChat(inputBook: book, buyer: buyer, seller: seller)
     }
-
+    
     @objc func saveButtonTapped(){
-        let userID :Int = NewLoginViewController.currentUser.id
+        let userID :Int = NetworkManager.currentUser.id
         let postStruct = addCartStruct(bookId: bookID)
-        let updateToken:String = NewLoginViewController.currentUser.update_token
-
-
-        if addButton.titleLabel?.text == "Add to Cart"{
-            //add to cart
+        let updateToken:String = NetworkManager.currentUser.update_token
+        
+        isSaved.toggle()
+        
+        if !isSaved {
+            //add to saved
             NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
                 books in
-                let alert = UIAlertController(title: "Success", message: "saved!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.saved.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
             }
         }
         else{
-            //remove from cart
+            //remove from saved
             NetworkManager.deleteOneBookFromCart(currentUserId: userID, bookId: bookID,updateToken: updateToken){ books in //returned cart is not used
-                let alert = UIAlertController(title: "Success", message: "removed!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+                self.saved.setImage(UIImage(systemName: "bookmark"), for: .normal)
             }
         }
     }
-    
 }

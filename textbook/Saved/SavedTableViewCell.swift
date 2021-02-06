@@ -128,7 +128,6 @@ class SavedTableViewCell: UITableViewCell {
     
     @objc func tappingDelete(){
         //delete button tapped
-        print("just pressed the delete button")
         delegate?.deleteFromCartAction(bookId: textBookId)
     }
     

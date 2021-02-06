@@ -19,6 +19,7 @@ class ProductInfoViewController: UIViewController {
         
         productInfoView.configure(inputBookData: inputBook)
         productInfoView.chatDelegate = self
+//        productInfoView.loadingDelegate = self
         view = productInfoView
         
         
@@ -36,6 +37,5 @@ extension ProductInfoViewController: ShowChatProtocol{
         let vc = ChatViewController(currentUser: buyer, otherUser: seller, book: inputBook)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
 }
+

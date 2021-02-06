@@ -18,8 +18,6 @@ class NewLoginViewController: UIViewController {
     var loginEmail: UITextField!
     var loginPassword: UITextField!
     var loginButton: UIButton!
-    
-    static var currentUser: User!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,7 +156,7 @@ class NewLoginViewController: UIViewController {
         
         if canLogIn {
             NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
-                NewLoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
+                NetworkManager.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
             }) { (errorMessage) in
                 self.createAlert(message: errorMessage)

@@ -74,7 +74,7 @@ class ProfileViewController: UIViewController {
     
     private func retrieveUserInfo(){
         
-        let sellerID :Int =  NewLoginViewController.currentUser.id
+        let sellerID :Int = NetworkManager.currentUser.id
         
         NetworkManager.getUserInfo(currentUserId: sellerID){ responseData in
             self.retrievedUserInfo = responseData
