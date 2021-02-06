@@ -150,7 +150,7 @@ class AddNewBook: UIViewController {
         //        view.addSubview(courseDescription)
         
         photosLabel = UILabel()
-        photosLabel.text = "Submit Photos"
+        photosLabel.text = "Submit Photo"
         photosLabel.textAlignment = .left
         photosLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         photosLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -169,15 +169,12 @@ class AddNewBook: UIViewController {
         confirmButton.setTitle("Confirm To Sell", for: .normal)
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
-        
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.backgroundColor = pink
-        
-        
         view.addSubview(confirmButton)
         
         bookImage = UIImageView()
-        bookImage.image = UIImage(named: "add_image_icon")
+//        bookImage.image = UIImage()
         bookImage.translatesAutoresizingMaskIntoConstraints = false
         bookImage.contentMode = .scaleAspectFill
         bookImage.layer.cornerRadius = 30
@@ -302,111 +299,84 @@ class AddNewBook: UIViewController {
         showChooseSourceTypeAlertController()
     }
     
-    //    func uploadImage(){
-    //        print("there is a fake book id")
-    //        let fakeBookID:Int = LoginViewController.currentUser.id //this is correct now
-    //
-    //        let imageData:NSData = bookImage.image!.pngData()! as NSData
-    //        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-    //
-    //        let uploadImageData = uploadBookImage(imageData: imageStr, bookId: fakeBookID)
-    //
-    //        NetworkManager.postBookImage(newBookImage: uploadImageData)
-    //    }
-    
     func uploadBook(){
         
-        var canUpload = true
+        var canUpload = false
         
         let sellerID :Int = NetworkManager.currentUser.id
         
+        //collect input info
         var userInputTitle:String = ""
         if let title = bookTitle.text{
             userInputTitle = title
-        }
-        if (userInputTitle == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide a book title", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
         }
         
         var userInputAuthor:String = ""
         if let author = bookAuthor.text{
             userInputAuthor = author
         }
-        if (userInputAuthor == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide the author(s) of the book", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
-        }
         
         var userInputEdition:String = ""
         if let edition = bookEdition.text{
             userInputEdition = edition
-        }
-        if (userInputEdition == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please provide a book edition", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
         }
         
         var userInputPrice:Double = -1
         if let price = Double(bookPrice.text!){
             userInputPrice = price
         }
-        else{
-            let alert = UIAlertController(title: "Alert", message: "Please provide a valid price", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
-        }
         
         var userInputCourseName:String = ""
         if let courseName = courseUsedFor.text{
             userInputCourseName = courseName
         }
-        if (userInputCourseName == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please enter course used for", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
-        }
-        
-        
+
         var userInputCondition:String = ""
         if let condition = selectedBookCondition {
             userInputCondition = condition
         }
-        if (userInputCondition == "") {
-            let alert = UIAlertController(title: "Alert", message: "Please select a book condition", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
-        }
-        
         
         var userInputISBN:String = ""
         if let isbn = bookISBN.text{
             userInputISBN = isbn
         }
         
-        if bookImage.image == UIImage(named: "add_image_icon"){
-            let alert = UIAlertController(title: "Alert", message: "Please upload a photo of your book", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            canUpload = false
+        var imageStr: String?
+        if let image = bookImage.image{
+            let imageData:NSData = image.jpegData(compressionQuality: 0.01)! as NSData
+            imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        }
+       
+        
+        //show only one alert window
+        if (userInputTitle == "") {
+            showAlert(message: "Please provide a book title.")
+        }
+        else if (userInputAuthor == "") {
+            showAlert(message: "Please provide the author(s) of the book.")
+        }
+        else if (userInputEdition == "") {
+            showAlert(message:  "Please provide a book edition.")
+        }
+        else if (userInputPrice == -1){
+            showAlert(message: "Please provide a valid price.")
+        }
+        else if (userInputCourseName == "") {
+            showAlert(message: "Please enter course used for.")
+        }
+        else if (userInputCondition == "") {
+            showAlert(message: "Please select a book condition.")
+        }
+        else if bookImage.image == nil {
+            showAlert(message: "Please upload a photo of your book.")
+        }
+        else{
+            canUpload = true
         }
         
-        
-        let imageData:NSData = bookImage.image!.jpegData(compressionQuality: 0.01)! as NSData
-        let imageStr = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-        
-        
+        // upload process
         if canUpload {
-            let uploadBook = uploadBookBackEndNoImageStruct(title: userInputTitle, price: userInputPrice, sellerId: sellerID, image: imageStr, author: userInputAuthor, courseName: userInputCourseName, isbn: userInputISBN, edition: userInputEdition, condition: userInputCondition)
+            let uploadBook = uploadBookBackEndNoImageStruct(title: userInputTitle, price: userInputPrice, sellerId: sellerID, image: imageStr!, author: userInputAuthor, courseName: userInputCourseName, isbn: userInputISBN, edition: userInputEdition, condition: userInputCondition)
             
             //uploading...
             let alert = UIAlertController(title: nil, message: "Uploading...", preferredStyle: .alert)
@@ -435,7 +405,7 @@ class AddNewBook: UIViewController {
                 self.bookPrice.text = ""
                 self.bookISBN.text = ""
                 self.courseUsedFor.text = ""
-                self.bookImage.image = UIImage(named: "add_image_icon")
+//                self.bookImage.image = UIImage(systemName: "photo")
                 
                 let newViewController = ConfirmSellSuccessViewController()
                 self.navigationController?.pushViewController(newViewController, animated: true)
@@ -448,6 +418,12 @@ class AddNewBook: UIViewController {
         //        print("confirm button tapped. do something")
         uploadBook()
         //TabBarController().selectedIndex = 0
+    }
+    
+    func showAlert(message: String){
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
 }

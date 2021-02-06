@@ -100,12 +100,7 @@ class HomeScreenCollectionViewCell: UICollectionViewCell{
             bookImage.image = UIImage(named: "default_book")
         }
         else{
-            
-            
-            
             bookImage.sd_setImage(with: URL(string: inputbookData.image[0].url), placeholderImage: UIImage(named: "default_book"))
-            
-            
         }
         
         bookTitle.text = inputbookData.title

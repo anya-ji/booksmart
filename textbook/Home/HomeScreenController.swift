@@ -28,8 +28,9 @@ class HomeScreenController: UIViewController {
         searchControllerOne.hidesNavigationBarDuringPresentation = false
         searchControllerOne.obscuresBackgroundDuringPresentation = false
         searchControllerOne.searchBar.placeholder = "Search by ISBN, Title, or Author's Name"
-        searchControllerOne.searchBar.showsCancelButton = true
+        searchControllerOne.searchBar.searchTextField.addTarget(self, action: #selector(showCancel), for: .touchUpInside)
         searchControllerOne.searchBar.searchTextField.delegate = self
+        searchControllerOne.searchBar.endEditing(true)
         definesPresentationContext = true
         
         //UITableView
@@ -86,6 +87,10 @@ class HomeScreenController: UIViewController {
         
     }
     
+    @objc func showCancel(){
+        searchControllerOne.searchBar.showsCancelButton = true
+    }
+   
     
     private func getAll(){
         var allFromBackend : [Book] = []
@@ -205,8 +210,15 @@ extension HomeScreenController: UISearchResultsUpdating {
 
 extension HomeScreenController: UITextFieldDelegate {
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
+        searchBar.text = ""
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
         let newViewController = SearchViewController(initialText: textField.text)
         navigationController?.pushViewController(newViewController, animated: true)
         

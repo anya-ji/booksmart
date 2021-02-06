@@ -38,26 +38,28 @@ class NetworkManager {
     }
     
     static func searchBooks(name:String, completion: @escaping ([Book]) -> Void) {
-           let endpoint = "\(host)/api/books/search/\(name)"
-           AF.request(endpoint, method: .get).validate().responseData { response in
-               
-               switch response.result {
-               case .success(let data):
-                   let jsonDecoder = JSONDecoder()
-                   if let recentlyAddedResponse = try? jsonDecoder.decode(RecentlyAdded.self, from: data) {
-                       // Instructions: Use completion to handle response
-                       let receivedData = recentlyAddedResponse.data
-                       completion(receivedData)
-                   }
-                   else{
-                       print("could not decode data at searching books")
-                   }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
-           }
-       }
-       
+        let param:[String:Any] = [
+            "text": name
+        ]
+        let endpoint = "\(host)/api/books/search/"
+        AF.request(endpoint, method: .post, parameters: param, encoding: JSONEncoding.default).validate().responseData { response in
+            
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                if let recentlyAddedResponse = try? jsonDecoder.decode(RecentlyAdded.self, from: data) {
+                    let receivedData = recentlyAddedResponse.data
+                    completion(receivedData)
+                }
+                else{
+                    print("could not decode data at searching books")
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     
     static func postBook(newBookData:uploadBookBackEndNoImageStruct,completion:@escaping (uploadBookBackEndResponseStruct)->Void){
         
@@ -77,7 +79,7 @@ class NetworkManager {
         
         let endpoint = "\(host)/api/books/sell/"
         
-        AF.request(endpoint,method: .post,parameters: parameters,encoding: JSONEncoding.default).validate(statusCode: 200..<600).responseData { (response) in
+        AF.request(endpoint,method: .post,parameters: parameters,encoding: JSONEncoding.default).validate().responseData { (response) in
             switch response.result {
             case .success(let data):
                 
@@ -123,7 +125,7 @@ class NetworkManager {
                 }
                 
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
-                  
+                    
                     completion(responseFromBackEnd.data.cart)
                 }
                 
@@ -158,7 +160,7 @@ class NetworkManager {
                 if let responseFromBackEnd = try? jsonDecoder.decode(userInfoResponse.self, from: data!) {
                     completion(responseFromBackEnd.data.cart)
                 }
- 
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
