@@ -348,8 +348,6 @@ class ProductInfoView: UIView {
         let postStruct = addCartStruct(bookId: bookID)
         let updateToken:String = NetworkManager.currentUser.update_token
         
-        isSaved.toggle()
-        
         if !isSaved {
             //add to saved
             NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
@@ -363,5 +361,7 @@ class ProductInfoView: UIView {
                 self.saved.setImage(UIImage(systemName: "bookmark"), for: .normal)
             }
         }
+        
+        isSaved.toggle()
     }
 }
