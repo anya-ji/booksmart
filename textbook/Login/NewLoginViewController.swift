@@ -56,6 +56,7 @@ class NewLoginViewController: UIViewController {
         loginEmail.layer.shadowRadius = 0.0
         loginEmail.translatesAutoresizingMaskIntoConstraints = false
         loginEmail.autocorrectionType = .no
+        loginEmail.autocapitalizationType = .none
         view.addSubview(loginEmail)
         
         loginPassword = UITextField()
@@ -70,6 +71,8 @@ class NewLoginViewController: UIViewController {
         loginPassword.layer.shadowRadius = 0.0
         loginPassword.translatesAutoresizingMaskIntoConstraints = false
         loginPassword.autocorrectionType = .no
+        loginPassword.autocapitalizationType = .none
+        loginPassword.isSecureTextEntry = true
         view.addSubview(loginPassword)
         
         loginButton = UIButton()

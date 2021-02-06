@@ -318,9 +318,7 @@ class AddNewBook: UIViewController {
         
         var canUpload = true
         
-        let fakeSellerID :Int = LoginViewController.currentUser.id //this is now correct
-        //let fakeSellerID :Int = 1
-        
+        let sellerID :Int = NetworkManager.currentUser.id
         
         var userInputTitle:String = ""
         if let title = bookTitle.text{
@@ -408,7 +406,7 @@ class AddNewBook: UIViewController {
         
         
         if canUpload {
-            let uploadBook = uploadBookBackEndNoImageStruct(title: userInputTitle, price: userInputPrice, sellerId: fakeSellerID, image: imageStr, author: userInputAuthor, courseName: userInputCourseName, isbn: userInputISBN, edition: userInputEdition, condition: userInputCondition)
+            let uploadBook = uploadBookBackEndNoImageStruct(title: userInputTitle, price: userInputPrice, sellerId: sellerID, image: imageStr, author: userInputAuthor, courseName: userInputCourseName, isbn: userInputISBN, edition: userInputEdition, condition: userInputCondition)
             
             //uploading...
             let alert = UIAlertController(title: nil, message: "Uploading...", preferredStyle: .alert)

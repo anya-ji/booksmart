@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController {
     var registerEmail: UITextField!
     var registerPassword: UITextField!
     var nextButton: UIButton!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -183,6 +183,78 @@ class RegisterViewController: UIViewController {
     
     @objc func nextButtonTapped() {
         // TODO: push next registration screen
+        register()
+    }
+    
+    func register(){
+        var canRegister = true
+        var userInputEmail = ""
+        if let email = registerEmail.text{
+            userInputEmail = email
+        }
+        if (userInputEmail == "") {
+            let alert = UIAlertController(title: "Alert", message: "Please provide an email address", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            canRegister = false
+        }
+        
+        var userInputFName = ""
+        if let firstName = registerFName.text{
+            userInputFName = firstName
+        }
+        if (userInputFName == "") {
+            let alert = UIAlertController(title: "Alert", message: "Please provide a first name", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            canRegister = false
+        }
+        
+        var userInputLName = ""
+        if let lastName = registerLName.text{
+            userInputLName = lastName
+        }
+        if (userInputLName == "") {
+            let alert = UIAlertController(title: "Alert", message: "Please provide a last name", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            canRegister = false
+        }
+        
+        var userInputPassword = ""
+        if let password = registerPassword.text{
+            userInputPassword  = password
+        }
+        if (userInputPassword == "") {
+            let alert = UIAlertController(title: "Alert", message: "Please set a password", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            canRegister = false
+        }
+        
+        
+        let email = userInputEmail
+        let name = userInputFName + " " + userInputLName
+        let password = userInputPassword
+        
+        if canRegister {
+            NetworkManager.registerUser(email: email, name: name, password: password, completion: { (accountDetails) in
+
+                self.login(email: email, password: password)
+                
+            }) { (errorMessage) in
+                self.createAlert(message: errorMessage)
+            }
+        }
+    }
+    
+    func login(email: String, password: String){
+        NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
+            NewLoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+        }) { (errorMessage) in
+            self.createAlert(message: errorMessage)
+        }
     }
     
     func createAlert(message: String) {
@@ -196,8 +268,8 @@ class RegisterViewController: UIViewController {
     //they are used when we want to dismiss the keyboard when tap outside of UITextField
     func setupToHideKeyboardOnTapOnView() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-          target: self,
-          action: #selector(dismissKeyboard))
+            target: self,
+            action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }

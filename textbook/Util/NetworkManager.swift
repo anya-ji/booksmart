@@ -10,6 +10,8 @@ import Alamofire
 
 class NetworkManager {
     
+    static var currentUser: User!
+    
     //    private static let host = "https://hackathonbooksmart.herokuapp.com"
     
     private static let host = "http://0.0.0.0:5000"

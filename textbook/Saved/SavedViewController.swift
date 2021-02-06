@@ -241,8 +241,8 @@ extension SavedViewController:deleteFromCart{
     
     func deleteFromCartAction(bookId: Int) {
         
-        let sellerID :Int = LoginViewController.currentUser.id
-        let updateToken:String = LoginViewController.currentUser.update_token
+        let sellerID :Int = NetworkManager.currentUser.id
+        let updateToken:String = NetworkManager.currentUser.update_token
         
         //call network manager to delete the book
         NetworkManager.deleteOneBookFromCart(currentUserId: sellerID, bookId: bookId,updateToken: updateToken){ books in //returned cart is not used

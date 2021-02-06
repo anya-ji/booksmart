@@ -32,9 +32,7 @@ class LoginViewController: UIViewController {
     var loginTab: UIButton!
     var loginButton: UIButton!
     
-    static var currentUser: User!
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -391,7 +389,7 @@ class LoginViewController: UIViewController {
         registerTab.isHidden = false
         registerTab.isUserInteractionEnabled = true
     }
-
+    
     @objc func registerTabTapped() {
         
         loginTitle.isHidden = true
@@ -476,7 +474,7 @@ class LoginViewController: UIViewController {
         
         if canRegister {
             NetworkManager.registerUser(email: email, name: name, password: password, completion: { (accountDetails) in
-                LoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
+                NetworkManager.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
             }) { (errorMessage) in
                 self.createAlert(message: errorMessage)
             }
@@ -519,7 +517,7 @@ class LoginViewController: UIViewController {
         
         if canLogIn {
             NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
-                LoginViewController.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
+                NetworkManager.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
                 //self.navigationController?.pushViewController(TabBarController(), animated: true)
             }) { (errorMessage) in
@@ -540,8 +538,8 @@ class LoginViewController: UIViewController {
     //they are used when we want to dismiss the keyboard when tap outside of UITextField
     func setupToHideKeyboardOnTapOnView() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-          target: self,
-          action: #selector(dismissKeyboard))
+            target: self,
+            action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
