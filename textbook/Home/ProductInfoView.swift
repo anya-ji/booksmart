@@ -19,6 +19,8 @@ class ProductInfoView: UIView {
     var bookAuthor: UILabel!
     var bookEdition: UILabel!
     var bookISBN: UILabel!
+    var saved: UIButton! // testing
+    var savedIcon: UIImage!
     var bookPrice: UILabel!
     var bookCondition: UILabel!
     var bookClass: UILabel!
@@ -80,6 +82,21 @@ class ProductInfoView: UIView {
         bookISBN.font = .systemFont(ofSize: 15, weight: .regular)
         bookISBN.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bookISBN)
+        
+        savedIcon = UIImage(systemName: "bookmark")
+        
+        saved = UIButton() //(type: UIButton.ButtonType.custom) as UIButton?
+//        saved.clipsToBounds = true
+//        saved.contentMode = .scaleAspectFill
+        saved.setImage(savedIcon, for: .normal)
+//        saved.setTitle("+", for: .normal)
+//        saved.setTitleColor(.black, for: .normal)
+//        saved.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+//        saved.backgroundColor = .white
+//        saved.layer.cornerRadius = 15
+        saved.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        saved.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(saved)
         
         bookPrice = UILabel()
         bookPrice.textColor = .black
@@ -197,7 +214,14 @@ class ProductInfoView: UIView {
         ])
         
         NSLayoutConstraint.activate([
-            bookPrice.topAnchor.constraint(equalTo: bookAuthor.topAnchor),
+            saved.topAnchor.constraint(equalTo: bookAuthor.topAnchor),
+            saved.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            saved.heightAnchor.constraint(equalToConstant: 20),
+            saved.widthAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            bookPrice.topAnchor.constraint(equalTo: saved.bottomAnchor),
             bookPrice.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             bookPrice.widthAnchor.constraint(equalToConstant: 110)
         ])
@@ -275,7 +299,7 @@ class ProductInfoView: UIView {
             
         }
         
-        let userID :Int = LoginViewController.currentUser.id
+        let userID :Int = NewLoginViewController.currentUser.id
         NetworkManager.getUserInfo(currentUserId: userID){ responseData in
             //MARK: Keep for cart feature
 //            if responseData.cart.contains(inputBookData){
@@ -321,4 +345,28 @@ class ProductInfoView: UIView {
     @objc func addButtonTapped(){
         chatDelegate?.showChat(inputBook: book, buyer: buyer, seller: seller)
     }
+
+    @objc func saveButtonTapped(){
+        let userID :Int = NewLoginViewController.currentUser.id
+        let postStruct = addCartStruct(bookId: bookID)
+        let updateToken:String = NewLoginViewController.currentUser.update_token
+
+
+        if addButton.titleLabel?.text == "Add to Cart"{
+            //add to cart
+            NetworkManager.addToCart(book: postStruct, currentUserId: userID,updateToken: updateToken){
+                books in
+                let alert = UIAlertController(title: "Success", message: "saved!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            }
+        }
+        else{
+            //remove from cart
+            NetworkManager.deleteOneBookFromCart(currentUserId: userID, bookId: bookID,updateToken: updateToken){ books in //returned cart is not used
+                let alert = UIAlertController(title: "Success", message: "removed!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            }
+        }
+    }
+    
 }

@@ -38,7 +38,7 @@ class TabBarController: UITabBarController {
         let addNewBook = generateNavController(vc: AddNewBook(), barTitle: "Sell", pageTitle: "Sell A New Book", image: UIImage(systemName: "plus.circle")!)
         
         //cart
-        let cart = generateNavController(vc: CartViewController(), barTitle: "Saved", pageTitle: "Saved Listings", image: UIImage(systemName: "bookmark")!)
+        let cart = generateNavController(vc: SavedViewController(), barTitle: "Saved", pageTitle: "Saved", image: UIImage(systemName: "bookmark")!)
         
         //default profile
         let profile = generateNavController(vc: ProfileViewController(), barTitle: "Profile", pageTitle: "", image: UIImage(systemName: "person.fill")!)

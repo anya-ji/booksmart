@@ -34,6 +34,8 @@
 		6C812E78257D93D40066EE78 /* ProductInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812E77257D93D40066EE78 /* ProductInfoViewController.swift */; };
 		6C812E9725846D6F0066EE78 /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812E9625846D6F0066EE78 /* SuccessViewController.swift */; };
 		6C812E9A2585A42A0066EE78 /* EncodeDecodeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C812E992585A4290066EE78 /* EncodeDecodeImage.swift */; };
+		C712260D25CDAA220095324D /* SavedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C712260C25CDAA220095324D /* SavedViewController.swift */; };
+		C712261125CDB09D0095324D /* SavedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C712261025CDB09D0095324D /* SavedTableViewCell.swift */; };
 		E8177CD8259D681E0066ED45 /* ChatManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8177CD7259D681E0066ED45 /* ChatManagerViewController.swift */; };
 		E8177CDA259D6BB70066ED45 /* ChatManagerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8177CD9259D6BB70066ED45 /* ChatManagerTableViewCell.swift */; };
 		E82779AD25845F9F00EE187C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82779AC25845F9F00EE187C /* SearchViewController.swift */; };
@@ -78,6 +80,8 @@
 		6C812E9625846D6F0066EE78 /* SuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		6C812E992585A4290066EE78 /* EncodeDecodeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeDecodeImage.swift; sourceTree = "<group>"; };
 		B4686C12BF6E031CFBBDF054 /* Pods_textbook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_textbook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C712260C25CDAA220095324D /* SavedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedViewController.swift; sourceTree = "<group>"; };
+		C712261025CDB09D0095324D /* SavedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedTableViewCell.swift; sourceTree = "<group>"; };
 		E8177CD7259D681E0066ED45 /* ChatManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManagerViewController.swift; sourceTree = "<group>"; };
 		E8177CD9259D6BB70066ED45 /* ChatManagerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManagerTableViewCell.swift; sourceTree = "<group>"; };
 		E82779AC25845F9F00EE187C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 				41DFEF3125C6EEF600AFE4E2 /* GoogleService-Info.plist */,
 				414FE94A25BC78F100AE9F38 /* Home */,
 				414FE94B25BC790D00AE9F38 /* Cart */,
+				C712260A25CDA9750095324D /* Saved */,
 				414FE94C25BC792700AE9F38 /* Add */,
 				414FE94D25BC793D00AE9F38 /* Login */,
 				414FE94925BC78DF00AE9F38 /* Chat */,
@@ -235,6 +240,15 @@
 				6956E4586860B10D4FAD5AB0 /* Pods-textbook.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C712260A25CDA9750095324D /* Saved */ = {
+			isa = PBXGroup;
+			children = (
+				C712261025CDB09D0095324D /* SavedTableViewCell.swift */,
+				C712260C25CDAA220095324D /* SavedViewController.swift */,
+			);
+			path = Saved;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,8 +394,10 @@
 				E82779B125856CD900EE187C /* ProfileViewController.swift in Sources */,
 				E8CD79BD25CB8E4A00370BB9 /* NewLoginViewController.swift in Sources */,
 				E8CD79B625CB687F00370BB9 /* PreLoginViewController.swift in Sources */,
+				C712261125CDB09D0095324D /* SavedTableViewCell.swift in Sources */,
 				41DFEF3025C6EB8B00AFE4E2 /* ChatNetworkManager.swift in Sources */,
 				4102F65A25A495AD00DE7C8A /* ChatViewController.swift in Sources */,
+				C712260D25CDAA220095324D /* SavedViewController.swift in Sources */,
 				6C812E9725846D6F0066EE78 /* SuccessViewController.swift in Sources */,
 				412850A12571A92A00B319C1 /* SceneDelegate.swift in Sources */,
 				4102F65625A492D400DE7C8A /* ConfirmSellSuccessViewController.swift in Sources */,
