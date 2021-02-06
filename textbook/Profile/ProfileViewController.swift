@@ -156,7 +156,8 @@ class ProfileViewController: UIViewController {
         view.addSubview(userLocation)
         
         userPicture = UIImageView()
-        userPicture.image = UIImage(named: "fake_profile")
+        userPicture.image = UIImage(systemName: "person.circle")
+        userPicture.tintColor = UIColor.custom_aqua
         userPicture.contentMode = .scaleAspectFit
         userPicture.layer.cornerRadius = 60
         userPicture.clipsToBounds = true

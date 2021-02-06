@@ -157,6 +157,7 @@ class ProductInfoView: UIView {
         sellerImage.layer.cornerRadius = 25
         // temporary image, replace later
         sellerImage.image = UIImage(systemName: "person.circle")
+        sellerImage.tintColor = UIColor.custom_aqua
         sellerImage.clipsToBounds = true
         sellerImage.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sellerImage)
