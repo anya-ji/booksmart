@@ -278,7 +278,9 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func logoutButtonTapped(){
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(PreLoginViewController())
+        
+       (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController: PreLoginViewController()))
+        
     }
 }
 
