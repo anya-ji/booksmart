@@ -12,6 +12,10 @@ import Firebase
 class FirebaseService{
     static let db = Firestore.firestore()
     
+    static func toDate(t: Any?) -> Date{
+        return (t as! Timestamp).dateValue()
+    }
+    
     static func createChat(buyer: UserInfo, seller: UserInfo, book: Book, completion: @escaping ()-> Void){
         db.collection("chats").addDocument(data: [
             "updated": Date(),
@@ -20,7 +24,8 @@ class FirebaseService{
             "book": book.toDict(),
             "buyerId": buyer.id,
             "sellerId": seller.id,
-            "bookId": book.id
+            "bookId": book.id,
+            "userIds": [buyer.id, seller.id]
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
@@ -52,7 +57,8 @@ class FirebaseService{
                                 for document in snap!.documents {
                                     let data = document.data()
                                     let sender = Sender(senderId: data["senderEmail"] as! String, displayName: data["senderName"] as! String)
-                                    messages.append(Message(sender: sender, messageId: document.documentID, sentDate: data["created"] as! Date, kind: .text(data["body"] as! String)))
+                                    let date = FirebaseService.toDate(t: data["created"])
+                                    messages.append(Message(sender: sender, messageId: document.documentID, sentDate: date, kind: .text(data["body"] as! String)))
                                 }
                                 completion(messages)
                             }
@@ -60,5 +66,27 @@ class FirebaseService{
                     }
                 }
         }
+    }
+    
+    static func getContacts(userId: Int, completion: @escaping ([ChatInfo])->Void){
+        db.collection("chats").whereField("userIds", arrayContains: userId)
+            .order(by: "updated", descending: true)
+            .addSnapshotListener({ (snap, err) in
+                if let err = err{
+                    print("Error getting documents: \(err)")
+                }
+                else{
+                    var contacts:[ChatInfo] = []
+                    for document in snap!.documents {
+                        let data = document.data()
+                        let date = FirebaseService.toDate(t: data["updated"])
+                        let buyer = UserInfo.fromDB(data: data["buyer"] as! [String : Any])
+                        let seller = UserInfo.fromDB(data: data["seller"] as! [String : Any])
+                        let bookInfo = BookInfo.fromDB(data: data["book"] as! [String : Any])
+                        contacts.append(ChatInfo(id: document.documentID, updated: date, buyer: buyer, seller: seller, bookInfo: bookInfo, userIds: data["userIds"] as! [Int]))
+                    }
+                    completion(contacts)
+                }
+            })
     }
 }

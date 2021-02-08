@@ -15,12 +15,23 @@ class ChatManagerViewController: UIViewController {
     let chatManagerCellReuseIdentifier = "chatManagerCellReuseIdentifier"
     var tableViewHeight: CGFloat!
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let userId = NetworkManager.currentUser.id
+        FirebaseService.getContacts(userId: userId) { (contacts) in
+            for chat in contacts{
+                let otherUser = chat.buyer.id == userId ? chat.seller.name : chat.buyer.name
+                self.chats.append(otherUser)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         //TODO: fake data, remove the fake data later; DO NOT remove array, array should hold list of users that the current user has chats with. For now array takes Strings only because it is easier for me to input fake data, later on change the chats array type AND the configure function in ChatManagerTableViewCell.swift
-        chats = ["Amy","Thomas","Joey"]
+//        chats = ["Amy","Thomas","Joey"]
         
         setupViews()
         setupConstraints()

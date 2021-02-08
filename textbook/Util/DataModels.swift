@@ -59,6 +59,7 @@ struct Book: Codable,Equatable{
         ]
     }
     
+    
 }
 
 struct BookImage: Codable{
@@ -155,6 +156,10 @@ struct UserInfo {
                 "email": email,
                 "name": name]
     }
+    
+    static func fromDB(data: [String: Any]) -> UserInfo{
+        return UserInfo(id: data["id"] as! Int, email: data["email"] as! String, name: data["name"] as! String)
+    }
 }
 
 struct Sender: SenderType {
@@ -167,4 +172,39 @@ struct Message: MessageType {
     var messageId: String
     var sentDate: Date
     var kind: MessageKind
+}
+
+struct BookInfo{
+    var id: Int
+    var title: String
+    var author: String
+    var courseName: String
+    var isbn: String
+    var edition: String
+    var price: String
+    var available: Bool
+    var condition: String
+    
+    static func fromDB(data: [String: Any]) -> BookInfo{
+        let id = data["id"] as! Int
+        let title = data["title"] as! String
+        let author = data["author"] as! String
+        let courseName = data["courseName"] as! String
+        let isbn = data["isbn"] as! String
+        let edition = data["edition"] as! String
+        let price = data["price"] as! String
+        let available = data["available"] as! Bool
+        let condition = data["condition"] as! String
+        
+        return BookInfo(id: id, title: title, author: author, courseName: courseName, isbn: isbn, edition: edition, price: price, available: available, condition: condition)
+    }
+}
+
+struct ChatInfo {
+    var id: String
+    var updated: Date
+    var buyer: UserInfo
+    var seller: UserInfo
+    var bookInfo: BookInfo
+    var userIds: [Int]
 }
