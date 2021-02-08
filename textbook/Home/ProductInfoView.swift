@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol ShowChatProtocol: class {
-    func showChat(inputBook:Book, buyer:UserInfo, seller: UserInfo)
+    func showChat(inputBook:Book, buyer:UserInfo, seller: UserInfo, messages: [Message])
 }
 
 protocol ShowLoadingProtocol: class {
@@ -341,7 +341,9 @@ class ProductInfoView: UIView {
     //    }
     
     @objc func addButtonTapped(){
-        chatDelegate?.showChat(inputBook: book, buyer: buyer, seller: seller)
+        FirebaseService.getChat(buyer: buyer, seller: seller, book: book) { messages in
+            self.chatDelegate?.showChat(inputBook: self.book, buyer: self.buyer, seller: self.seller, messages: messages)
+        }
     }
     
     @objc func saveButtonTapped(){

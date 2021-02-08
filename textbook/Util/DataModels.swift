@@ -7,34 +7,12 @@
 //
 
 import Foundation
+import MessageKit
 
 enum SellType{
     case sell
     case exchange
 }
-
-
-//class bookData {
-//    
-//    var bookImageName : String
-//    var title: String
-//    var author: String
-//    var courseName: String
-//    var sellType: SellType
-//    var sellPrice: Double
-//    
-//    init(imageName:String,inputTitle:String,inputAuthor:String,inputCourseName:String,inputSellType:SellType,inputSellPrice:Double) {
-//        bookImageName = imageName
-//        title = inputTitle
-//        author = inputAuthor
-//        courseName = inputCourseName
-//        sellType = inputSellType
-//        sellPrice = inputSellPrice
-//    }
-//    
-//    
-//}
-
 
 struct RecentlyAdded: Codable{
     
@@ -53,7 +31,6 @@ struct Book: Codable,Equatable{
         }
     }
     
-    
     var id: Int
     var image: [BookImage]
     var title: String
@@ -67,6 +44,20 @@ struct Book: Codable,Equatable{
     var updatedAt: String?
     var sellerId: Int
     var condition: String
+    
+    func toDict() -> [String: Any]{
+        return [
+            "id": id,
+            "title": title,
+            "author": author,
+            "courseName": courseName,
+            "isbn": isbn,
+            "edition": edition,
+            "price": price,
+            "available": available,
+            "condition": condition
+        ]
+    }
     
 }
 
@@ -111,11 +102,6 @@ struct uploadBookBackEndResponseStruct: Codable{
     var updatedAt: String?
     var sellerId: Int
 }
-
-//struct uploadBookImage: Codable{
-//    var imageData: String
-//    var bookId: Int
-//}
 
 struct addCartStruct:Codable{
     var bookId:Int
@@ -163,4 +149,22 @@ struct UserInfo {
     var id: Int
     var email: String
     var name: String
+    
+    func toDict() -> [String: Any]{
+        return ["id": id,
+                "email": email,
+                "name": name]
+    }
+}
+
+struct Sender: SenderType {
+    var senderId: String
+    var displayName: String
+}
+
+struct Message: MessageType {
+    var sender: SenderType
+    var messageId: String
+    var sentDate: Date
+    var kind: MessageKind
 }

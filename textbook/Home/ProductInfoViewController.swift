@@ -33,8 +33,8 @@ class ProductInfoViewController: UIViewController {
 }
 
 extension ProductInfoViewController: ShowChatProtocol{
-    func showChat(inputBook: Book, buyer: UserInfo, seller: UserInfo) {
-        let vc = ChatViewController(currentUser: buyer, otherUser: seller, book: inputBook)
+    func showChat(inputBook: Book, buyer: UserInfo, seller: UserInfo, messages: [Message]) {
+        let vc = ChatViewController(currentUser: buyer, otherUser: seller, book: inputBook, messages: messages)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

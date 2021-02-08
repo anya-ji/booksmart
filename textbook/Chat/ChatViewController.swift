@@ -15,24 +15,14 @@ class ChatViewController: MessagesViewController {
     var otherUser: Sender!
     var messages: [MessageType] = []
     var book: Book!
+
     
-    struct Sender: SenderType {
-        var senderId: String
-        var displayName: String
-    }
-    
-    struct Message: MessageType {
-        var sender: SenderType
-        var messageId: String
-        var sentDate: Date
-        var kind: MessageKind
-    }
-    
-    init(currentUser: UserInfo, otherUser: UserInfo, book: Book){
+    init(currentUser: UserInfo, otherUser: UserInfo, book: Book, messages: [Message]){
         super.init(nibName: nil, bundle: nil)
         self.currentUser = Sender(senderId: currentUser.email, displayName: currentUser.name)
         self.otherUser = Sender(senderId: otherUser.email, displayName: otherUser.name)
         self.book = book
+        self.messages = messages
     }
     
     required init?(coder: NSCoder) {
@@ -49,11 +39,11 @@ class ChatViewController: MessagesViewController {
         self.title = otherUser.displayName
         
         //TODO: fake data, remove later
-        messages.append(Message(sender: currentUser, messageId: "1", sentDate: Date().addingTimeInterval(-7000), kind: .text("Hi there!")))
-        messages.append(Message(sender: otherUser, messageId: "2", sentDate: Date().addingTimeInterval(-6000), kind: .text("Hi! How are you doing?")))
-        messages.append(Message(sender: currentUser, messageId: "3", sentDate: Date().addingTimeInterval(-5000), kind: .text("I'm doing great! How about you?")))
-        messages.append(Message(sender: otherUser, messageId: "4", sentDate: Date().addingTimeInterval(-4000), kind: .text("I'm doing great as well, when would you like to meet up?")))
-        messages.append(Message(sender: currentUser, messageId: "5", sentDate: Date().addingTimeInterval(-3000), kind: .text("Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon?")))
+//        messages.append(Message(sender: currentUser, messageId: "1", sentDate: Date().addingTimeInterval(-7000), kind: .text("Hi there!")))
+//        messages.append(Message(sender: otherUser, messageId: "2", sentDate: Date().addingTimeInterval(-6000), kind: .text("Hi! How are you doing?")))
+//        messages.append(Message(sender: currentUser, messageId: "3", sentDate: Date().addingTimeInterval(-5000), kind: .text("I'm doing great! How about you?")))
+//        messages.append(Message(sender: otherUser, messageId: "4", sentDate: Date().addingTimeInterval(-4000), kind: .text("I'm doing great as well, when would you like to meet up?")))
+//        messages.append(Message(sender: currentUser, messageId: "5", sentDate: Date().addingTimeInterval(-3000), kind: .text("Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon? Are you free later today afternoon?")))
         
         configureMessageInputBar()
         
