@@ -11,6 +11,7 @@ import Alamofire
 class NetworkManager {
     
     static var currentUser: User!
+    static var currentUserInfo: UserInfo!
     
     //    private static let host = "https://hackathonbooksmart.herokuapp.com"
     

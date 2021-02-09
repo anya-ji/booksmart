@@ -22,6 +22,8 @@ class RegisterViewController: UIViewController {
     var registerPassword: UITextField!
     var nextButton: UIButton!
     
+    let userDefaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -239,7 +241,7 @@ class RegisterViewController: UIViewController {
         
         if canRegister {
             NetworkManager.registerUser(email: email, name: name, password: password, completion: { (accountDetails) in
-
+                
                 self.login(email: email, password: password)
                 
             }) { (errorMessage) in
@@ -251,7 +253,21 @@ class RegisterViewController: UIViewController {
     func login(email: String, password: String){
         NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
             NetworkManager.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+            
+            //save user
+            let user = try? PropertyListEncoder().encode(NetworkManager.currentUser)
+            
+            self.userDefaults.set(user, forKey: "currentUser")
+            
+            NetworkManager.getUserInfo(currentUserId: accountDetails.id) { (userInfo) in
+                NetworkManager.currentUserInfo = UserInfo(id: accountDetails.id, email: email, name: userInfo.name)
+                
+                //save userInfo
+                let userInfo = try? PropertyListEncoder().encode(NetworkManager.currentUserInfo)
+                self.userDefaults.set(userInfo, forKey: "currentUserInfo")
+                
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+            }
         }) { (errorMessage) in
             self.createAlert(message: errorMessage)
         }

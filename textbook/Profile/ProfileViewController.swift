@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController {
     var profileTableViewHeight: CGFloat!
     var retrievedUserInfo: userInfoResponseDataStruct!
     
+    let userDefaults = UserDefaults.standard
     
     var currentListings: [Book] = []
     //var previousPurchase: [bookData] = []
@@ -68,7 +69,6 @@ class ProfileViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool){
-        print("inside view did appear from profile view controller")
         retrieveUserInfo()
     }
     
@@ -279,6 +279,10 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func logoutButtonTapped(){
+        
+        //clean up userDefaults, log out
+        userDefaults.set(Data(), forKey: "currentUser")
+        userDefaults.set(Data(), forKey: "currentUserInfo")
         
        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController: PreLoginViewController()))
         

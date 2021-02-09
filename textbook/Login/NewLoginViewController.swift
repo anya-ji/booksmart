@@ -18,10 +18,12 @@ class NewLoginViewController: UIViewController {
     var loginEmail: UITextField!
     var loginPassword: UITextField!
     var loginButton: UIButton!
-
+    
+    let userDefaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         
         navigationController?.navigationBar.isHidden = false
@@ -157,7 +159,21 @@ class NewLoginViewController: UIViewController {
         if canLogIn {
             NetworkManager.loginUser(email: email, password: password, completion: { (accountDetails) in
                 NetworkManager.currentUser = User(session_token: accountDetails.session_token, session_expiration: accountDetails.session_expiration, update_token: accountDetails.update_token, userId: accountDetails.id)
-                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+                
+                //save user
+                let user = try? PropertyListEncoder().encode(NetworkManager.currentUser)
+                self.userDefaults.set(user, forKey: "currentUser")
+                
+                NetworkManager.getUserInfo(currentUserId: accountDetails.id) { (userInfo) in
+                    NetworkManager.currentUserInfo = UserInfo(id: accountDetails.id, email: email, name: userInfo.name)
+                    
+                    //save userInfo
+                    let userInfo = try? PropertyListEncoder().encode(NetworkManager.currentUserInfo)
+                    self.userDefaults.set(userInfo, forKey: "currentUserInfo")
+                    
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(TabBarController())
+                }
+                
             }) { (errorMessage) in
                 self.createAlert(message: errorMessage)
             }
@@ -175,8 +191,8 @@ class NewLoginViewController: UIViewController {
     //they are used when we want to dismiss the keyboard when tap outside of UITextField
     func setupToHideKeyboardOnTapOnView() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-          target: self,
-          action: #selector(dismissKeyboard))
+            target: self,
+            action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }

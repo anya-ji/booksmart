@@ -121,7 +121,7 @@ struct userInfoResponseDataStruct:Codable{
     var cart:[Book]
 }
 
-class User {
+class User: Codable {
     var session_token: String
     var session_expiration: String
     var update_token: String
@@ -146,7 +146,7 @@ struct accountError: Codable {
     var error: String
 }
 
-struct UserInfo {
+struct UserInfo: Codable {
     var id: Int
     var email: String
     var name: String
